@@ -23,17 +23,23 @@ This guide provides instructions for setting up the EMS App for development.
    composer install
    ```
 
-3. **Database Setup**: Ensure the MySQL server is running and import the database dump.
+3. **Database Setup**: Ensure the MySQL server is running and import the database dump. This is a required step as the database is not created automatically on application startup, atleast on local. On production, the understanding is not clear as of now.
 
    ```bash
    mysql -u root -p client_payroll < client_payroll_dump.sql
    ```
 
-4. **Configure Environment**: Copy the `.env.example` to `.env` and configure your environment variables - As of now this is not required as all the environment variables are set in the `includes/dbconn.php` file. This should be removed in future and shifted to the `.env` file.
+4. **Configure Database Connection**: The application currently uses hardcoded database credentials in `includes/dbconn.php`. You'll need to update these to match your local MySQL configuration:
 
-   ```bash
-   cp .env.example .env
-   ```
+   - Open `includes/dbconn.php`
+   - Update the following values:
+
+     ```php
+     define('DB_USER', 'your_mysql_username'); // Default is 'root'
+     define('DB_PASS', 'your_mysql_password'); // Set to your MySQL password
+     ```
+
+   Note: In the future, these credentials will be moved to a proper `.env` configuration file for better security and flexibility.
 
 5. **Start the PHP Server**: Use PHP's built-in server to run the application locally.
 
@@ -42,6 +48,16 @@ This guide provides instructions for setting up the EMS App for development.
    ```
 
 6. **Access the Application**: Open your web browser and navigate to `http://localhost:8000` to access the EMS App.
+
+7. **Login**: There are 2 users in the system - `admin` and `user`.
+
+   - **Admin**: Use the following credentials to login to the admin panel of the application:
+
+     - Username: `admin`
+     - Password: `Password@123`
+   - **User**: Use the following credentials to login to the user panel of the application:
+     - Username: `user`
+     - Password: `Password@123`
 
 ## Additional Resources
 
