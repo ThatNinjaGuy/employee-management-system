@@ -1,0 +1,278 @@
+    1  sudo service apache2 start
+    2  ls
+    3  cd /var/www/html/
+    4  ls
+    5  nano app.html
+    6  sudo service apache2 start
+    7  sudo servie mysql start
+    8  sudo service mysql start
+    9  sudo systemctl status apache2
+   10  sudo service mysql status
+   11  sudo systemctl status apache2
+   12  sudo ufw allow 80
+   13  sudo systemctl restart apache2
+   14  cat /var/log/apache2/error.log
+   15  cd /etc/apache2/sites-available
+   16  ls
+   17  nano 000-default.conf 
+   18  nano default-ssl.conf 
+   19  cdc
+   20  cd
+   21  ls
+   22  sudo systemctl restart apache2
+   23  cat /var/log/apache2/error.log
+   24  cd /var/www/html/
+   25  ls
+   26  cat index.html 
+   27  [200~sudo systemctl status apache2
+   28  sudo systemctl status apache2
+   29  sudo tail -f /var/log/apache2/error.log
+   30  sudo ufw allow 'Apache'
+   31  sudo systemctl restart apache2
+   32  nc -vz  13.233.9.110
+   33  nc -vz  13.233.9.110 22
+   34  curl localhost:80
+   35  exit
+   36  reboot
+   37  sudo service apache2 stop
+   38  sudo apt-get purge apache2
+   39  sudo apt-get autoremove
+   40  sudo apt-get update
+   41  sudo apt-get install apache2
+   42  sudo service apache2 start
+   43  nc -vz  13.233.9.110 22
+   44  sudo tail -f /var/log/apache2/error.log
+   45  sudo systemctl status apache2
+   46  nano /etc/apache2/sites-available/
+   47  cat /etc/apache2/sites-available/000-default.conf 
+   48  cd /var/www/html/
+   49  ls
+   50  cd
+   51  nano /etc/apache2/sites-available/000-default.con
+   52  sudo service apache2 restart
+   53  nano /etc/apache2/sites-available/000-default.conf 
+   54  sudo service apache2 restart
+   55  ls
+   56  sudo service apache2 status
+   57  sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+   58  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+   59  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+   60  sudo apt update
+   61  sudo apt install caddy
+   62  caddy start
+   63  systemctl start caddy
+   64  systemctl status caddy
+   65  sudo systemctl status caddy
+   66  sudo systemctl daemon-reload
+   67  sudo systemctl start caddy
+   68  sudo systemctl status caddy
+   69  ls
+   70  cd /var/www/html
+   71  ls
+   72  cd
+   73  ls
+   74  ls la
+   75  ls al
+   76  ls -al
+   77  exit
+   78  mysql
+   79  cd /var/www/html/m
+   80  cd /var/www/html/
+   81  ls
+   82  cd
+   83  ls
+   84  pwd
+   85  ls
+   86  cd 
+   87  sudo su
+   88  cd
+   89  exit
+   90  mysql
+   91  mysql -h localhost -u dogoy -p StrongPassword123! client_payroll < client_payroll.sql 
+   92  mysql -h localhost -u root -p StrongPassword123! client_payroll < client_payroll.sql 
+   93  mysql -u dogoy -p StrongPassword123! client_payroll < client_payroll.sql 
+   94  mysql -u dogoy -p  client_payroll < client_payroll.sql 
+   95  mysql
+   96  ls
+   97  rm app-svc-key.pem 
+   98  ls
+   99  rm app-server.pem 
+  100  ls
+  101  rm -r DATABASE\ FILE/
+  102  LS
+  103  ls
+  104  cd ..
+  105  ls
+  106  mv client-payroll /var/www/html/
+  107  ls
+  108  cd /var/www/html/
+  109  ls
+  110  service apache2 restart
+  111  cd /var/www/html/
+  112  ls
+  113  cd client-payroll/
+  114  ls
+  115  cd admin/
+  116  ls
+  117  cd ..
+  118  cd includes/
+  119  ls
+  120  nano dbconn.php 
+  121  ls
+  122  exit
+  123  rm -r client-payroll.zip §
+  124  rm -r client-payroll.zip 
+  125  rm client-payroll.zip 
+  126  ls
+  127  cd __MACOSX/
+  128  ls
+  129  cd
+  130  ls
+  131  sudo su
+  132  exit
+  133  rm -r __MACOSX/
+  134  LS
+  135  ls
+  136  cd /var/www/html/
+  137  ls
+  138  cd client-payroll/
+  139  ls
+  140  cd ..
+  141  ls
+  142  mv index.html indexxx.html 
+  143  ls
+  144  cd client-payroll/
+  145  cp -r ./ /var/www/html/
+  146  ls
+  147  cd ..
+  148  ls
+  149  rm ss
+  150  rm client_payroll.sql 
+  151  rm password-recovery.php 
+  152  ls
+  153  cd client-payroll/
+  154  ls
+  155  cd ..
+  156  ls
+  157  rm -r client-payroll/
+  158  ls
+  159  cd admin/
+  160  ls
+  161  clear
+  162  ls
+  163  cd ..
+  164  ls
+  165  cd includes/
+  166  ls
+  167  nano logged.php 
+  168  nano admin-sidebar.php 
+  169  cd ..
+  170  nano index.php 
+  171  cd admin/
+  172  nano index.php 
+  173  nano dashboard.php 
+  174  ls
+  175  cd ..
+  176  ls
+  177  cd includes/
+  178  ls
+  179  nano admin-sidebar.php 
+  180  cd ..
+  181  cd admin
+  182  ls
+  183  nano index.php 
+  184  nano dashboard.php 
+  185  ls
+  186  cd ..
+  187  ls
+  188  cd assets/
+  189  ls
+  190  rm I
+  191  rm 01\ LOGIN\ DETAILS\ \&\ PROJECT\ INFO.txt 
+  192  ls
+  193  cd ..
+  194  ls
+  195  cd includes/
+  196  ls
+  197  mv admin-sidebar.php admin_sidebar.php
+  198  ls
+  199  cd ..
+  200  cd admin/
+  201  nano dashboard.php 
+  202  cd ..
+  203  cd in
+  204  cd includes/
+  205  ls
+  206  mv admin_sidebar.php admin-sidebard.php
+  207  ls
+  208  cd ..
+  209  ls
+  210  cd admin/
+  211  nano dashboard.php 
+  212  ls
+  213  cd ..
+  214  ls
+  215  sudo chmod -R 777 .
+  216  cd admin
+  217  sudo chmod -R 777 .
+  218  cd ..
+  219  cd includes/
+  220  sudo chmod -R 777 .
+  221  ls
+  222  mv admin-sidebard.php admin-sidebar.php 
+  223  cd ..
+  224  cd admin/
+  225  nano dashboard.php 
+  226  sudo service apache2 restart
+  227  nano d
+  228  nano dashboard.php 
+  229  cd /var/www/html/
+  230  ls
+  231  cd admin/
+  232  nano add-employee.php 
+  233  ls
+  234  cd /var/www/html/
+  235  ls
+  236  cd admin/
+  237  nano view-payroll.php 
+  238  cd 
+  239  ls
+  240  exit
+  241  cd /var/www/html/
+  242  cd admin/
+  243  nano dashboard.php 
+  244  cd ..
+  245  cd admin/
+  246  nano dashboard.php 
+  247  ls
+  248  rm 'DATABASE FILE'/
+  249  rm -r 'DATABASE FILE'/
+  250  rm -r includes/ vendor/ assets/ admin/
+  251  l
+  252  rm -r client_payroll.sql 
+  253  rm -r client-payroll.zip 
+  254  ls
+  255  rm -r ubuntu\@ec2-13-233-9-110.ap-south-1.compute.amazonaws.com 
+  256  ls
+  257  rm app-server.pem app-svc-key.pem composer.json composer.lock index.php payslip_data.xlsx password-recovery.php 
+  258  ls
+  259  rm ss
+  260  ls
+  261  cd admin/
+  262  ls
+  263  cp group.php group-info.php /var/www/html/admin/
+  264  ls
+  265  cd ..
+  266  ls
+  267  rm -r admin/
+  268  ls
+  269  mv add-attendance.php attendance.php edit-attendance.php /var/www/html/admin/
+  270  mv view-payroll.php /var/www/html/admin/
+  271  cd /var/www/html/admin/ 
+  272  mv view-payroll.php /var/www/html/admin/
+  273  cd /var/www/html/admin/ 
+  274  cd /var/www/html/admin/ 
+  275  mv view-payroll.php /var/www/html/admin/
+  276  cd /var/www/html/admin/ 
+  277  history
+  278  history > su_history.txt

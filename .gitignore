@@ -1,0 +1,31 @@
+# Composer
+/vendor/
+/composer.lock
+
+# PHPStorm
+/.idea/
+
+# Node
+/node_modules/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.cache
+*.tmp
+
+# Environment variables
+.env
+
+# PHPUnit
+.phpunit.result.cache
+
+# Vagrant
+.vagrant/
+
+# Laravel specific (if applicable)
+/bootstrap/cache/
+/storage/ 
