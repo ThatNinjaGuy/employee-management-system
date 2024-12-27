@@ -1,3 +1,4 @@
+<!-- : The script starts a session and checks if the usertype session variable is set. If not, it redirects the user to index.php and stops further execution. -->
 <?php
     session_start();
     include('../includes/dbconn.php');
@@ -71,7 +72,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Dashboard</h4>
+                            <h4 class="page-title pull-left">Admin Overview</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
                                 <li><span>Admin's Dashboard</span></li>
@@ -91,143 +92,78 @@
             </div>
             <!-- page title area end -->
             <div class="main-content-inner">
-                <!-- sales report area start -->
-                <div class="sales-report-area mt-5 mb-5">
-                    <div class="row">
-                    <?php
-include '../../includes/dbconn.php';
-
-$sql = "SELECT d.id, d.name, COUNT(e.id) AS employee_count 
-        FROM tbldesignation d 
-        LEFT JOIN tblemployees e ON d.id = e.designation 
-        GROUP BY d.id, d.name";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results = $query->fetchAll(PDO::FETCH_OBJ);
-
-foreach ($results as $result) {
-    ?>
-    <div class="col-md-4">
-        <div class="single-report mb-xs-30">
-            <div class="s-report-inner pr--20 pt--30 mb-3">
-                <div class="icon"><i class="fa fa-briefcase"></i></div>
-                <div class="s-report-title d-flex justify-content-between">
-                    <h4 class="header-title mb-0">Employees With Designation</h4>
-                </div>
-                <div class="d-flex justify-content-between pb-2">
-                    <h4><?php echo htmlentities($result->name); ?></h4>
-                    <span><?php echo htmlentities($result->employee_count); ?> employees</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php
-}
-?>
-
-                        <div class="col-md-4">
-                            <div class="single-report mb-xs-30">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-users"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Registered Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/emp-counter.php'?></h1>
-                                        <span>Total Employees</span>
-                                    </div>
-                                </div>
-                                <!-- <canvas id="coin_sales2" height="100"></canvas> -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Sites</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/dept-counter.php'?></h1>
-                                        <span>Employee Sites</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/activeemp-counter.php'?></h1>
-                                        <span>Active Employees</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/inactiveemp-counter.php'?></h1>
-                                        <span>InActive Employees</span>
-                                    </div>
-                                </div>
-
-                            </div>
+                <!-- Key Metrics Section -->
+                <div class="key-metrics mt-5 d-flex justify-content-between">
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fa fa-users"></i></div>
+                        <div class="metric-content">
+                            <h4>Total Employees</h4>
+                            <span><?php include 'counters/emp-counter.php'?></span>
                         </div>
                     </div>
-
-                    <br>
-
-             
-                                      
-
-                </div>
-                
-                <div class="row">
-                    
-                
-                        
-                                                
-
-                
-                                           
-
-                                     
-                                            </div>
-                                        </div>
-                                        </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fa fa-th-large"></i></div>
+                        <div class="metric-content">
+                            <h4>Active Employees</h4>
+                            <span><?php include 'counters/activeemp-counter.php'?></span>
                         </div>
-                    </div> 
-                    <!-- trading history area end -->
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fa fa-th-large"></i></div>
+                        <div class="metric-content">
+                            <h4>Inactive Employees</h4>
+                            <span><?php include 'counters/inactiveemp-counter.php'?></span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fa fa-th-large"></i></div>
+                        <div class="metric-content">
+                            <h4>Available Sites</h4>
+                            <span><?php include 'counters/dept-counter.php'?></span>
+                        </div>
+                    </div>
                 </div>
-                <!-- row area end -->
-                
+                <!-- Key Metrics Section End -->
+                <!-- Employee Summary Section -->
+                <div class="employee-summary mt-5 mb-5">
+                    <h4 class="section-title">Employee Summary</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Designation</th>
+                                <th>Number of Employees</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "SELECT d.id, d.name, COUNT(e.id) AS employee_count 
+                                    FROM tbldesignation d 
+                                    LEFT JOIN tblemployees e ON d.id = e.designation 
+                                    GROUP BY d.id, d.name";
+                            $query = $dbh->prepare($sql);
+                            $query->execute();
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                            foreach ($results as $result) {
+                                echo "<tr>
+                                        <td>" . htmlentities($result->name) . "</td>
+                                        <td>" . htmlentities($result->employee_count) . "</td>
+                                      </tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- row area start-->
+                <!-- Employee Summary Section End -->
             </div>
+            <!-- Main Content Area End -->
+
             <?php include '../includes/footer.php' ?>
-        <!-- footer area end-->
         </div>
         <!-- main content area end -->
-
-        
-
     </div>
+
+    <!-- Scripts -->
     <!-- jquery latest version -->
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap 4 js -->
