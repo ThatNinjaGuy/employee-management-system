@@ -1,3 +1,4 @@
+<!-- : The script starts a session and checks if the usertype session variable is set. If not, it redirects the user to index.php and stops further execution. -->
 <?php
     session_start();
     include('../includes/dbconn.php');
@@ -63,15 +64,38 @@
             </div>
         </div>
        
-        <div class="main-content">
-      
-            
-         
+        <div class="main-content">   
+            <!-- header area start -->
+            <div class="header-area">
+                <div class="row align-items-center">
+                    
+                    <div class="col-md-6 col-sm-8 clearfix">
+                        <div class="nav-btn pull-left">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        
+                    </div>
+                   
+                    <div class="col-md-6 col-sm-4 clearfix">
+                        <ul class="notification-area pull-right">
+                            <li id="full-view"><i class="ti-fullscreen"></i></li>
+                            <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
+
+                            
+                            <?php include '../includes/admin-notification.php'?>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- header area end -->
             <div class="page-title-area">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Dashboard</h4>
+                            <h4 class="page-title pull-left">Admin Overview</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
                                 <li><span>Admin's Dashboard</span></li>
@@ -91,143 +115,165 @@
             </div>
             <!-- page title area end -->
             <div class="main-content-inner">
-                <!-- sales report area start -->
-                <div class="sales-report-area mt-5 mb-5">
-                    <div class="row">
-                    <?php
-include '../../includes/dbconn.php';
-
-$sql = "SELECT d.id, d.name, COUNT(e.id) AS employee_count 
-        FROM tbldesignation d 
-        LEFT JOIN tblemployees e ON d.id = e.designation 
-        GROUP BY d.id, d.name";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results = $query->fetchAll(PDO::FETCH_OBJ);
-
-foreach ($results as $result) {
-    ?>
-    <div class="col-md-4">
-        <div class="single-report mb-xs-30">
-            <div class="s-report-inner pr--20 pt--30 mb-3">
-                <div class="icon"><i class="fa fa-briefcase"></i></div>
-                <div class="s-report-title d-flex justify-content-between">
-                    <h4 class="header-title mb-0">Employees With Designation</h4>
-                </div>
-                <div class="d-flex justify-content-between pb-2">
-                    <h4><?php echo htmlentities($result->name); ?></h4>
-                    <span><?php echo htmlentities($result->employee_count); ?> employees</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php
-}
-?>
-
-                        <div class="col-md-4">
-                            <div class="single-report mb-xs-30">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-users"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Registered Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/emp-counter.php'?></h1>
-                                        <span>Total Employees</span>
-                                    </div>
-                                </div>
-                                <!-- <canvas id="coin_sales2" height="100"></canvas> -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Sites</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/dept-counter.php'?></h1>
-                                        <span>Employee Sites</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/activeemp-counter.php'?></h1>
-                                        <span>Active Employees</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="single-report">
-                                <div class="s-report-inner pr--20 pt--30 mb-3">
-                                    <div class="icon"><i class="fa fa-th-large"></i></div>
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Available Employees</h4>
-                                        
-                                    </div>
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php include 'counters/inactiveemp-counter.php'?></h1>
-                                        <span>InActive Employees</span>
-                                    </div>
-                                </div>
-
+                <!-- Key Metrics Section -->
+                <div class="key-metrics mt-5 d-flex flex-wrap">
+                    <div class="metric-card" style="flex: 1 1 300px; min-width: 300px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                        <div class="metric-content text-center" style="padding: 20px;">
+                            <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php include 'counters/dept-counter.php'?></h2>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <i class="fa fa-th-large" style="font-size: 1.2rem;"></i>
+                                <span style="font-size: 1.1rem;">Available Sites</span>
                             </div>
                         </div>
                     </div>
-
-                    <br>
-
-             
-                                      
-
-                </div>
-                
-                <div class="row">
-                    
-                
-                        
-                                                
-
-                
-                                           
-
-                                     
-                                            </div>
-                                        </div>
-                                        </div>
+                    <div class="metric-card" style="flex: 1 1 300px; min-width: 300px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                        <div class="metric-content text-center" style="padding: 20px;">
+                            <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php include 'counters/activeemp-counter.php'?> / <?php include 'counters/emp-counter.php'?></h2>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <i class="fa fa-users" style="font-size: 1.2rem;"></i>
+                                <span style="font-size: 1.1rem;">Employee Status</span>
+                            </div>
                         </div>
-                    </div> 
-                    <!-- trading history area end -->
+                    </div>
                 </div>
-                <!-- row area end -->
-                
+                <!-- Key Metrics Section End -->
+                <!-- Employee Summary Section -->
+                <div class="employee-summary mt-5 mb-5">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="section-title">Employee Summary</h4>
+                        <!-- Move icons for switching views next to the title -->
+                        <div class="view-switcher">
+                            <i class="fa fa-pie-chart view-icon fa-lg" id="chart-view-icon" title="Pie Chart View" style="margin-right: 5px; opacity: 0.6;"></i>
+                            <i class="fa fa-table view-icon fa-lg" id="table-view-icon" title="Table View" style="opacity: 0.6;"></i>
+                        </div>
+                    </div>
+                    <!-- Pie Chart View -->
+                    <div id="chart-view">
+                        <canvas id="employeeChart" style="width: 100%; height: 400px;"></canvas>
+                    </div>
+                    <div id="table-view" style="display: none; margin-top: 20px;">
+                        <table class="table table-striped" style="border: 1px solid #dee2e6;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #dee2e6;">Designation</th>
+                                    <th style="border: 1px solid #dee2e6;">Number of Employees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = "SELECT d.id, d.name, COUNT(e.id) AS employee_count 
+                                        FROM tbldesignation d 
+                                        LEFT JOIN tblemployees e ON d.id = e.designation 
+                                        GROUP BY d.id, d.name
+                                        ORDER BY employee_count DESC";
+                                $query = $dbh->prepare($sql);
+                                $query->execute();
+                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                // Determine top N designations to display individually
+                                $topN = 5;
+                                $topResults = array_slice($results, 0, $topN);
+                                $otherResults = array_slice($results, $topN);
+
+                                // Calculate "Others" count
+                                $othersCount = array_reduce($otherResults, function($carry, $item) {
+                                    return $carry + $item->employee_count;
+                                }, 0);
+
+                                // Prepare data for chart
+                                $chartLabels = array_map(function($result) {
+                                    return htmlentities($result->name);
+                                }, $topResults);
+                                $chartData = array_map(function($result) {
+                                    return htmlentities($result->employee_count);
+                                }, $topResults);
+                                $chartColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+
+                                // Add "Others" category if applicable
+                                if ($othersCount > 0) {
+                                    $chartLabels[] = 'Others';
+                                    $chartData[] = $othersCount;
+                                    $chartColors[] = '#CCCCCC'; // Default color for "Others"
+                                }
+
+                                foreach ($topResults as $result) {
+                                    echo "<tr>
+                                            <td style='border: 1px solid #dee2e6;'>" . htmlentities($result->name) . "</td>
+                                            <td style='border: 1px solid #dee2e6;'>" . htmlentities($result->employee_count) . "</td>
+                                          </tr>";
+                                }
+
+                                // Add Others row if there are additional designations
+                                if ($othersCount > 0) {
+                                    echo "<tr>
+                                            <td style='border: 1px solid #dee2e6;'>Others</td>
+                                            <td style='border: 1px solid #dee2e6;'>" . $othersCount . "</td>
+                                          </tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <!-- row area start-->
+                <script>
+                // JavaScript to toggle views
+                document.getElementById('table-view-icon').addEventListener('click', function() {
+                    document.getElementById('table-view').style.display = 'block';
+                    document.getElementById('chart-view').style.display = 'none';
+                });
+
+                document.getElementById('chart-view-icon').addEventListener('click', function() {
+                    document.getElementById('table-view').style.display = 'none';
+                    document.getElementById('chart-view').style.display = 'block';
+                    renderChart();
+                });
+
+                // Function to render the pie chart
+                function renderChart() {
+                    var ctx = document.getElementById('employeeChart').getContext('2d');
+                    var chartData = {
+                        labels: <?php echo json_encode($chartLabels); ?>.map((label, index) => {
+                            return label + ' (' + <?php echo json_encode($chartData); ?>[index] + ')';
+                        }),
+                        datasets: [{
+                            data: <?php echo json_encode($chartData); ?>,
+                            backgroundColor: <?php echo json_encode($chartColors); ?>
+                        }]
+                    };
+
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            legend: {
+                                position: 'bottom'
+                            },
+                            layout: {
+                                padding: {
+                                    top: 20,
+                                    bottom: 20
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Ensure the pie chart is rendered on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    renderChart();
+                });
+                </script>
             </div>
+            <!-- Main Content Area End -->
+
             <?php include '../includes/footer.php' ?>
-        <!-- footer area end-->
         </div>
         <!-- main content area end -->
-
-        
-
     </div>
+
+    <!-- Scripts -->
     <!-- jquery latest version -->
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap 4 js -->
@@ -256,6 +302,8 @@ foreach ($results as $result) {
     <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 </html>
