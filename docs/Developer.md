@@ -63,3 +63,31 @@ This guide provides instructions for setting up the EMS App for development.
 
 - For more information on the database structure, refer to the [Database Details](database_details.md).
 - For any issues or contributions, please refer to the project's issue tracker or contact the maintainers.
+- For checking the database status on local:
+  - Ensure MySQL server is running on your machine
+  - Connect to MySQL using the command line:
+
+    ```bash
+    mysql -u root -p
+    ```
+
+  - Enter your MySQL password when prompted
+  - Switch to the EMS database:
+
+    ```sql
+    USE client_payroll;
+    ```
+
+  - View all tables in the database:
+
+    ```sql
+    SHOW TABLES;
+    ```
+
+  - Verify data access with a test query:
+
+    ```sql
+    SELECT * FROM admin LIMIT 1;
+    ```
+
+  - If all steps succeed, your database is properly configured
