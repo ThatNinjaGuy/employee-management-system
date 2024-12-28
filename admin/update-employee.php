@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('../includes/dbconn.php');
+
 if(empty($_SESSION['usertype'])) {   
     header('location:index.php');
     exit;
@@ -18,37 +19,54 @@ if(empty($_SESSION['usertype'])) {
         $rate = $_POST['rate'];
         $status = $_POST['status'];
 
-        $sql = "UPDATE tblemployees SET FirstName=:fname,LastName=:lname,Gender=:gender,dob=:dob,Site=:site,doj=:doj,rate=:rate,Status=:status WHERE id=:eid";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':fname', $fname, PDO::PARAM_STR);
-        $query->bindParam(':lname', $lname, PDO::PARAM_STR);
-        $query->bindParam(':gender', $gender, PDO::PARAM_STR);
-        $query->bindParam(':dob', $dob, PDO::PARAM_STR);
-        $query->bindParam(':site', $site, PDO::PARAM_STR);
-        $query->bindParam(':doj', $doj, PDO::PARAM_STR);
-        $query->bindParam(':rate', $rate, PDO::PARAM_STR);
-        $query->bindParam(':status', $status, PDO::PARAM_INT);
-        $query->bindParam(':eid', $eid, PDO::PARAM_STR);
-        $query->execute();
+        try {
+            $sql = "UPDATE tblemployees SET FirstName=:fname, LastName=:lname, Gender=:gender, dob=:dob, Site=:site, doj=:doj, rate=:rate, Status=:status WHERE id=:eid";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':fname', $fname, PDO::PARAM_STR);
+            $query->bindParam(':lname', $lname, PDO::PARAM_STR);
+            $query->bindParam(':gender', $gender, PDO::PARAM_STR);
+            $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+            $query->bindParam(':site', $site, PDO::PARAM_STR);
+            $query->bindParam(':doj', $doj, PDO::PARAM_STR);
+            $query->bindParam(':rate', $rate, PDO::PARAM_STR);
+            $query->bindParam(':status', $status, PDO::PARAM_INT);
+            $query->bindParam(':eid', $eid, PDO::PARAM_STR);
 
-        $msg = "Employee record updated successfully";
+            if ($query->execute()) {
+                header('Location: employees.php');
+                exit;
+            } else {
+                echo "<script>alert('Something went wrong. Please try again.');</script>";
+            }
+        } catch(PDOException $e) {
+            echo "<script>alert('Database error');</script>";
+        }
     }
 ?>
 
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Update Employee</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Add your existing head content here -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .sticky-submit {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-align: center;
+        }
+    </style>
 </head>
-<body>
-    <!-- Add your existing body content here -->
-    <button class="btn btn-primary" name="update" id="update" type="submit">MAKE CHANGES</button>
-    <!-- Add your existing body content here -->
-</body>
 </html>
 
 <?php } ?>
@@ -161,152 +179,124 @@ if(empty($_SESSION['usertype'])) {
             </div>
             <!-- page title area end -->
             <div class="main-content-inner">
-                
-                
-                <!-- row area start -->
                 <div class="row">
                 <div class="col-lg-6 col-ml-12">
                         <div class="row">
-                            <!-- Input form start -->
                             <div class="col-12 mt-5">
-                            <?php if($error){?><div class="alert alert-danger alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($error); ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            
-                             </div><?php } 
-                                 else if($msg){?><div class="alert alert-success alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($msg); ?> 
-                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                 </div><?php }?>
+                                <?php if($error){?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Info: </strong><?php echo htmlentities($error); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                <?php } else if($msg){?>
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <strong>Info: </strong><?php echo htmlentities($msg); ?> 
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                <?php }?>
                                 <div class="card">
-                                <form name="addemp" method="POST">
+                                    <form name="addemp" method="POST">
+                                        <div class="card-body">
+                                            <?php 
+                                                $eid = intval($_GET['empid']);
+                                                $sql = "SELECT * from tblemployees where id=:eid";
+                                                $query = $dbh->prepare($sql);
+                                                $query->bindParam(':eid', $eid, PDO::PARAM_STR);
+                                                $query->execute();
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) { 
+                                            ?> 
+                                            <div class="row">
+                                                <div class="form-group col-md-12">
+                                                    <small class="text-muted">Employee ID: <?php echo htmlentities($result->EmpId); ?></small>
+                                                </div>
+                                            </div>
 
-                                    <div class="card-body">
-                                        <?php 
-                                            $eid=intval($_GET['empid']);
-                                            $sql = "SELECT * from  tblemployees where id=:eid";
-                                            $query = $dbh -> prepare($sql);
-                                            $query -> bindParam(':eid',$eid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt=1;
-                                            if($query->rowCount() > 0)
-                                            {
-                                            foreach($results as $result)
-                                            {               ?> 
-                                    
-
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">First Name</label>
-                                            <input class="form-control" name="firstName" value="<?php echo htmlentities($result->FirstName);?>"  type="text" required id="example-text-input">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="example-text-input" class="col-form-label">First Name <span style="color: red;">*</span></label>
+                                                <input class="form-control" name="firstName" value="<?php echo htmlentities($result->FirstName); ?>" type="text" required id="example-text-input">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="example-text-input" class="col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                <input class="form-control" name="lastName" value="<?php echo htmlentities($result->LastName); ?>" type="text" autocomplete="off" required id="example-text-input">
+                                            </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Last Name</label>
-                                            <input class="form-control" name="lastName" value="<?php echo htmlentities($result->LastName);?>" type="text" autocomplete="off" required id="example-text-input">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="example-date-input" class="col-form-label">D.O.B</label>
+                                                <input class="form-control" type="date" name="dob" id="birthdate" value="<?php echo htmlentities($result->Dob); ?>">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="example-date-input" class="col-form-label">Rate</label>
+                                                <input class="form-control" type="text" name="rate" id="rate" value="<?php echo htmlentities($result->rate); ?>">
+                                            </div>
                                         </div>
 
-                                       
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="example-date-input" class="col-form-label">D.O.J</label>
+                                                <input class="form-control" type="date" name="doj" id="doj" value="<?php echo htmlentities($result->doj); ?>">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label">Assigned Site</label>
+                                                <select class="custom-select" name="site" autocomplete="off">
+                                                    <?php
+                                                    $sql = "SELECT * FROM tblsite";
+                                                    $query = $dbh->prepare($sql);
+                                                    $query->execute();
+                                                    $sites = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                        <div class="form-group">
-                                            <label class="col-form-label">Gender</label>
-                                            <select class="custom-select" name="gender" autocomplete="off">
-                                                <option value="<?php echo htmlentities($result->Gender);?>"><?php echo htmlentities($result->Gender);?></option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Other">Other</option>
-                                            </select>
+                                                    foreach ($sites as $site) { ?>
+                                                        <option value="<?php echo htmlentities($site->id); ?>" <?php if ($site->id == $result->Site) echo 'selected'; ?>>
+                                                            <?php echo htmlentities($site->name); ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="col-form-label">D.O.B</label>
-                                            <input class="form-control" type="date" name="dob" id="birthdate" value="<?php echo htmlentities($result->Dob);?>">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label">Gender</label>
+                                                <select class="custom-select" name="gender" autocomplete="off">
+                                                    <option value="Male" <?php if($result->Gender == 'Male') echo 'selected'; ?>>Male</option>
+                                                    <option value="Female" <?php if($result->Gender == 'Female') echo 'selected'; ?>>Female</option>
+                                                    <option value="Other" <?php if($result->Gender == 'Other') echo 'selected'; ?>>Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label">Status</label>
+                                                <select class="custom-select" name="status" autocomplete="off">
+                                                    <option value="1" <?php if ($result->Status == 1) echo 'selected'; ?>>Active</option>
+                                                    <option value="0" <?php if ($result->Status == 0) echo 'selected'; ?>>Inactive</option>
+                                                </select>
+                                            </div>
                                         </div>
-
-                                       
-
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Employee ID</label>
-                                            <input class="form-control" name="empcode" type="text" autocomplete="off" readonly required value="<?php echo htmlentities($result->EmpId);?>" id="example-text-input">
-                                        </div>
-
-                                      
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="col-form-label">D.O.J</label>
-                                            <input class="form-control" type="date" name="doj" id="doj" value="<?php echo htmlentities($result->doj);?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="col-form-label">Rate</label>
-                                            <input class="form-control" type="text" name="rate" id="rate" value="<?php echo htmlentities($result->rate);?>" >
-                                        </div>
-
-                                        <div class="form-group">
-    <label class="col-form-label">Assigned Site</label>
-    <select class="custom-select" name="site" autocomplete="off">
-        <?php
-        $eid = intval($_GET['empid']);
-        $sql = "SELECT * FROM tblemployees WHERE id = :eid";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':eid', $eid, PDO::PARAM_INT);
-        $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-        if ($query->rowCount() > 0) {
-            $employee = $results[0];
-            $siteId = $employee->Site;
-
-            $sql = "SELECT * FROM tblsite";
-            $query = $dbh->prepare($sql);
-            $query->execute();
-            $sites = $query->fetchAll(PDO::FETCH_OBJ);
-
-            foreach ($sites as $site) { ?>
-                <option value="<?php echo htmlentities($site->id); ?>" <?php if ($site->id == $siteId) echo 'selected'; ?>>
-                    <?php echo htmlentities($site->name); ?>
-                </option>
-        <?php }
-        } ?>
-    </select>
-</div>
-
 
                                         <?php }
-                                        }?>
-<div class="form-group">
-    <label class="col-form-label">Status</label>
-    <select class="custom-select" name="status" autocomplete="off">
-        <option value="1" <?php if ($result->Status == 1) echo 'selected'; ?>>Active</option>
-        <option value="0" <?php if ($result->Status == 0) echo 'selected'; ?>>Inactive</option>
-    </select>
-</div>
-                                        <button class="btn btn-primary" name="update" id="update" type="submit">MAKE CHANGES</button>
-                                        
+                                            } ?>
+                                    </div>
+                                    <div class="sticky-submit" style="display: flex;">
+                                        <button class="btn btn-secondary" type="button" onclick="window.history.back();" style="flex: 1; margin-right: 5px;">CANCEL</button>
+                                        <button class="btn btn-primary" name="update" id="update" type="submit" style="flex: 1; margin-left: 5px;">MAKE CHANGES</button>
                                     </div>
                                 </form>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
-                    <!-- Input Form Ending point -->
-                    
                 </div>
-                <!-- row area end -->
-                
-                </div>
-                <!-- row area start-->
             </div>
             <?php include '../includes/footer.php' ?>
-        <!-- footer area end-->
         </div>
-        <!-- main content area end -->
-
-        
-
     </div>
-    <!-- jquery latest version -->
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap 4 js -->
     <script src="../assets/js/popper.min.js"></script>
@@ -334,6 +324,12 @@ if(empty($_SESSION['usertype'])) {
     <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+
+    <script>
+        function logButtonClick() {
+            console.log("MAKE CHANGES button clicked");
+        }
+    </script>
 </body>
 
 </html>
