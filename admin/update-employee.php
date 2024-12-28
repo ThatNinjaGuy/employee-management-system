@@ -4,7 +4,7 @@ error_reporting(0);
 include('../includes/dbconn.php');
 if(empty($_SESSION['usertype'])) {   
     header('location:index.php');
-    exit; // Add exit to stop further execution
+    exit;
 } else {
     $eid = intval($_GET['empid']);
 
@@ -16,7 +16,7 @@ if(empty($_SESSION['usertype'])) {
         $site = $_POST['site'];
         $doj = $_POST['doj'];
         $rate = $_POST['rate'];
-        $status = $_POST['status']; // Added status
+        $status = $_POST['status'];
 
         $sql = "UPDATE tblemployees SET FirstName=:fname,LastName=:lname,Gender=:gender,dob=:dob,Site=:site,doj=:doj,rate=:rate,Status=:status WHERE id=:eid";
         $query = $dbh->prepare($sql);
@@ -27,7 +27,7 @@ if(empty($_SESSION['usertype'])) {
         $query->bindParam(':site', $site, PDO::PARAM_STR);
         $query->bindParam(':doj', $doj, PDO::PARAM_STR);
         $query->bindParam(':rate', $rate, PDO::PARAM_STR);
-        $query->bindParam(':status', $status, PDO::PARAM_INT); // Bind status parameter
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
         $query->bindParam(':eid', $eid, PDO::PARAM_STR);
         $query->execute();
 
@@ -37,36 +37,21 @@ if(empty($_SESSION['usertype'])) {
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Update Employee</title>
+    <title>Update Employee</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Add your existing head content here -->
 </head>
-
 <body>
     <!-- Add your existing body content here -->
-    <!-- <div class="form-group">
-        <label class="col-form-label">Status</label>
-        <select class="custom-select" name="status" autocomplete="off">
-            <option value="1" <?php if ($result->Status == 1) echo 'selected'; ?>>Active</option>
-            <option value="0" <?php if ($result->Status == 0) echo 'selected'; ?>>Inactive</option>
-        </select>
-    </div> -->
-
-    <!-- Add your existing body content here -->
-
     <button class="btn btn-primary" name="update" id="update" type="submit">MAKE CHANGES</button>
-
     <!-- Add your existing body content here -->
 </body>
-
 </html>
 
 <?php } ?>
-
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -74,7 +59,7 @@ if(empty($_SESSION['usertype'])) {
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Employee Leave</title>
+    <title>Employee Leave</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="../assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -155,11 +140,10 @@ if(empty($_SESSION['usertype'])) {
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Update Employee Section</h4>
+                            <h4 class="page-title pull-left">Update employee details</h4>
                             <ul class="breadcrumbs pull-left"> 
                                 <li><a href="employees.php">Employee</a></li>
                                 <li><span>Update</span></li>
-                                
                             </ul>
                         </div>
                     </div>
@@ -200,9 +184,6 @@ if(empty($_SESSION['usertype'])) {
                                 <form name="addemp" method="POST">
 
                                     <div class="card-body">
-                                        
-                                        <p class="text-muted font-14 mb-4">Please make changes on the form below in order to update </p>
-
                                         <?php 
                                             $eid=intval($_GET['empid']);
                                             $sql = "SELECT * from  tblemployees where id=:eid";
@@ -262,7 +243,7 @@ if(empty($_SESSION['usertype'])) {
                                         </div>
 
                                         <div class="form-group">
-    <label class="col-form-label">Your Site</label>
+    <label class="col-form-label">Assigned Site</label>
     <select class="custom-select" name="site" autocomplete="off">
         <?php
         $eid = intval($_GET['empid']);
@@ -356,4 +337,5 @@ if(empty($_SESSION['usertype'])) {
 </body>
 
 </html>
+
 
