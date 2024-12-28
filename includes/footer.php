@@ -1,5 +1,5 @@
 <footer>
         <div class="footer-area">
-                <p>© <?php echo date("Y");?> | Employee mgt by dogoy</a></p>
+                <p>© <?php echo date("Y");?> | A.R. Engineering & Services</a></p>
         </div>
 </footer>
