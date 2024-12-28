@@ -1,15 +1,20 @@
 <?php
 session_start();
+// Suppress error reporting
 error_reporting(0);
 include('../includes/dbconn.php');
 
+// Redirect to login if usertype session is empty
 if(empty($_SESSION['usertype'])) {   
     header('location:index.php');
     exit;
 } else {
+    // Get employee ID from URL
     $eid = intval($_GET['empid']);
 
+    // Check if the update form is submitted
     if (isset($_POST['update'])) {
+        // Retrieve form data
         $fname = $_POST['firstName'];
         $lname = $_POST['lastName'];
         $gender = $_POST['gender'];
@@ -20,8 +25,10 @@ if(empty($_SESSION['usertype'])) {
         $status = $_POST['status'];
 
         try {
+            // Prepare SQL query to update employee details
             $sql = "UPDATE tblemployees SET FirstName=:fname, LastName=:lname, Gender=:gender, dob=:dob, Site=:site, doj=:doj, rate=:rate, Status=:status WHERE id=:eid";
             $query = $dbh->prepare($sql);
+            // Bind parameters to the query
             $query->bindParam(':fname', $fname, PDO::PARAM_STR);
             $query->bindParam(':lname', $lname, PDO::PARAM_STR);
             $query->bindParam(':gender', $gender, PDO::PARAM_STR);
@@ -32,6 +39,7 @@ if(empty($_SESSION['usertype'])) {
             $query->bindParam(':status', $status, PDO::PARAM_INT);
             $query->bindParam(':eid', $eid, PDO::PARAM_STR);
 
+            // Execute the query and check if successful
             if ($query->execute()) {
                 header('Location: employees.php');
                 exit;
@@ -47,6 +55,7 @@ if(empty($_SESSION['usertype'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and CSS links -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Update Employee</title>
@@ -54,6 +63,7 @@ if(empty($_SESSION['usertype'])) {
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
     <style>
+        /* Sticky submit button styling */
         .sticky-submit {
             position: fixed;
             bottom: 0;
@@ -75,6 +85,7 @@ if(empty($_SESSION['usertype'])) {
 <html class="no-js" lang="en">
 
 <head>
+    <!-- Meta tags and CSS links -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Employee Leave</title>
@@ -98,21 +109,19 @@ if(empty($_SESSION['usertype'])) {
 </head>
 
 <body>
-    <!-- preloader area start -->
+    <!-- Preloader -->
     <div id="preloader">
         <div class="loader"></div>
     </div>
-    <!-- preloader area end -->
     
     <div class="page-container">
-        <!-- sidebar menu area start -->
+        <!-- Sidebar -->
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                <a href="dashboard.php">
-    <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
-</a>
-
+                    <a href="dashboard.php">
+                        <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
+                    </a>
                 </div>
             </div>
             <div class="main-menu">
@@ -124,36 +133,30 @@ if(empty($_SESSION['usertype'])) {
                 </div>
             </div>
         </div>
-        <!-- sidebar menu area end -->
-        <!-- main content area start -->
+        
         <div class="main-content">
-            <!-- header area start -->
+            <!-- Header area -->
             <div class="header-area">
                 <div class="row align-items-center">
-                    <!-- nav and search button -->
                     <div class="col-md-6 col-sm-8 clearfix">
                         <div class="nav-btn pull-left">
                             <span></span>
                             <span></span>
                             <span></span>
                         </div>
-                        
                     </div>
-                    <!-- profile info & task notification -->
                     <div class="col-md-6 col-sm-4 clearfix">
                         <ul class="notification-area pull-right">
                             <li id="full-view"><i class="ti-fullscreen"></i></li>
                             <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-
                             <!-- Notification bell -->
                             <?php include '../includes/admin-notification.php'?>
-
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- header area end -->
-            <!-- page title area start -->
+            
+            <!-- Page title area -->
             <div class="page-title-area">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
@@ -177,12 +180,14 @@ if(empty($_SESSION['usertype'])) {
                     </div>
                 </div>
             </div>
-            <!-- page title area end -->
+            
+            <!-- Main content area -->
             <div class="main-content-inner">
                 <div class="row">
-                <div class="col-lg-6 col-ml-12">
+                    <div class="col-lg-6 col-ml-12">
                         <div class="row">
                             <div class="col-12 mt-5">
+                                <!-- Display error or success messages -->
                                 <?php if($error){?>
                                     <div class="alert alert-danger alert-dismissible fade show">
                                         <strong>Info: </strong><?php echo htmlentities($error); ?>
@@ -199,9 +204,11 @@ if(empty($_SESSION['usertype'])) {
                                     </div>
                                 <?php }?>
                                 <div class="card">
+                                    <!-- Form to update employee details -->
                                     <form name="addemp" method="POST">
                                         <div class="card-body">
                                             <?php 
+                                                // Fetch employee details
                                                 $eid = intval($_GET['empid']);
                                                 $sql = "SELECT * from tblemployees where id=:eid";
                                                 $query = $dbh->prepare($sql);
@@ -217,27 +224,27 @@ if(empty($_SESSION['usertype'])) {
                                                 </div>
                                             </div>
 
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label for="example-text-input" class="col-form-label">First Name <span style="color: red;">*</span></label>
-                                                <input class="form-control" name="firstName" value="<?php echo htmlentities($result->FirstName); ?>" type="text" required id="example-text-input">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-text-input" class="col-form-label">First Name <span style="color: red;">*</span></label>
+                                                    <input class="form-control" name="firstName" value="<?php echo htmlentities($result->FirstName); ?>" type="text" required id="example-text-input">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-text-input" class="col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                    <input class="form-control" name="lastName" value="<?php echo htmlentities($result->LastName); ?>" type="text" autocomplete="off" required id="example-text-input">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="example-text-input" class="col-form-label">Last Name <span style="color: red;">*</span></label>
-                                                <input class="form-control" name="lastName" value="<?php echo htmlentities($result->LastName); ?>" type="text" autocomplete="off" required id="example-text-input">
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label for="example-date-input" class="col-form-label">D.O.B</label>
-                                                <input class="form-control" type="date" name="dob" id="birthdate" value="<?php echo htmlentities($result->Dob); ?>">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-date-input" class="col-form-label">D.O.B</label>
+                                                    <input class="form-control" type="date" name="dob" id="birthdate" value="<?php echo htmlentities($result->Dob); ?>">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-date-input" class="col-form-label">Rate</label>
+                                                    <input class="form-control" type="text" name="rate" id="rate" value="<?php echo htmlentities($result->rate); ?>">
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="example-date-input" class="col-form-label">Rate</label>
-                                                <input class="form-control" type="text" name="rate" id="rate" value="<?php echo htmlentities($result->rate); ?>">
-                                            </div>
-                                        </div>
 
                                         <div class="row">
                                             <div class="form-group col-md-6">
@@ -253,41 +260,42 @@ if(empty($_SESSION['usertype'])) {
                                                     $query->execute();
                                                     $sites = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                                    foreach ($sites as $site) { ?>
-                                                        <option value="<?php echo htmlentities($site->id); ?>" <?php if ($site->id == $result->Site) echo 'selected'; ?>>
-                                                            <?php echo htmlentities($site->name); ?>
-                                                        </option>
-                                                    <?php } ?>
-                                                </select>
+                                                        foreach ($sites as $site) { ?>
+                                                            <option value="<?php echo htmlentities($site->id); ?>" <?php if ($site->id == $result->Site) echo 'selected'; ?>>
+                                                                <?php echo htmlentities($site->name); ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="col-form-label">Gender</label>
-                                                <select class="custom-select" name="gender" autocomplete="off">
-                                                    <option value="Male" <?php if($result->Gender == 'Male') echo 'selected'; ?>>Male</option>
-                                                    <option value="Female" <?php if($result->Gender == 'Female') echo 'selected'; ?>>Female</option>
-                                                    <option value="Other" <?php if($result->Gender == 'Other') echo 'selected'; ?>>Other</option>
-                                                </select>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Gender</label>
+                                                    <select class="custom-select" name="gender" autocomplete="off">
+                                                        <option value="Male" <?php if($result->Gender == 'Male') echo 'selected'; ?>>Male</option>
+                                                        <option value="Female" <?php if($result->Gender == 'Female') echo 'selected'; ?>>Female</option>
+                                                        <option value="Other" <?php if($result->Gender == 'Other') echo 'selected'; ?>>Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Status</label>
+                                                    <select class="custom-select" name="status" autocomplete="off">
+                                                        <option value="1" <?php if ($result->Status == 1) echo 'selected'; ?>>Active</option>
+                                                        <option value="0" <?php if ($result->Status == 0) echo 'selected'; ?>>Inactive</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="col-form-label">Status</label>
-                                                <select class="custom-select" name="status" autocomplete="off">
-                                                    <option value="1" <?php if ($result->Status == 1) echo 'selected'; ?>>Active</option>
-                                                    <option value="0" <?php if ($result->Status == 0) echo 'selected'; ?>>Inactive</option>
-                                                </select>
-                                            </div>
-                                        </div>
 
-                                        <?php }
-                                            } ?>
-                                    </div>
-                                    <div class="sticky-submit" style="display: flex;">
-                                        <button class="btn btn-secondary" type="button" onclick="window.history.back();" style="flex: 1; margin-right: 5px;">CANCEL</button>
-                                        <button class="btn btn-primary" name="update" id="update" type="submit" style="flex: 1; margin-left: 5px;">MAKE CHANGES</button>
-                                    </div>
-                                </form>
+                                            <?php }
+                                                } ?>
+                                        </div>
+                                        <!-- Sticky submit buttons -->
+                                        <div class="sticky-submit" style="display: flex;">
+                                            <button class="btn btn-secondary" type="button" onclick="window.history.back();" style="flex: 1; margin-right: 5px;">Cancel</button>
+                                            <button class="btn btn-primary" name="update" id="update" type="submit" style="flex: 1; margin-left: 5px;">Save</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -297,8 +305,8 @@ if(empty($_SESSION['usertype'])) {
             <?php include '../includes/footer.php' ?>
         </div>
     </div>
+    <!-- JavaScript files -->
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
-    <!-- bootstrap 4 js -->
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/owl.carousel.min.js"></script>
@@ -306,30 +314,20 @@ if(empty($_SESSION['usertype'])) {
     <script src="../assets/js/jquery.slimscroll.min.js"></script>
     <script src="../assets/js/jquery.slicknav.min.js"></script>
 
-    <!-- start chart js -->
+    <!-- Chart and plugin scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <!-- start highcharts js -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <!-- start zingchart js -->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script>
     zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
     ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
     </script>
-    <!-- all line chart activation -->
     <script src="assets/js/line-chart.js"></script>
-    <!-- all pie chart -->
     <script src="assets/js/pie-chart.js"></script>
     
-    <!-- others plugins -->
+    <!-- Additional plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
-
-    <script>
-        function logButtonClick() {
-            console.log("MAKE CHANGES button clicked");
-        }
-    </script>
 </body>
 
 </html>
