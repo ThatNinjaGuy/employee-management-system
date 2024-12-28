@@ -179,9 +179,7 @@
                                     <table id="dataTable3" class="table table-hover table-striped text-center">
                                         <thead class="text-capitalize">
                                             <tr>
-                                                <th>#</th>
                                                 <th>Name</th>
-                                                <th>Employe ID</th>
                                                 <th>Site</th>
                                                 <th>Joined On</th>
                                                 <th>Status</th>
@@ -193,18 +191,16 @@
                                     <?php 
                                    $sql = "SELECT e.EmpId, e.FirstName, e.LastName, s.name AS SiteName, e.Status, e.id, e.doj 
                                    FROM tblemployees e
-                                   LEFT JOIN tblsite s ON e.Site = s.id";
+                                   LEFT JOIN tblsite s ON e.Site = s.id
+                                   ORDER BY e.doj DESC";
                            $query = $dbh->prepare($sql);
                            $query->execute();
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                           $cnt = 1;
                            if ($query->rowCount() > 0) {
                                foreach ($results as $result) {
                                    ?>
                                    <tr>
-                                       <td><?php echo htmlentities($cnt); ?></td>
                                        <td><?php echo htmlentities($result->FirstName); ?>&nbsp;<?php echo htmlentities($result->LastName); ?></td>
-                                       <td><?php echo htmlentities($result->EmpId); ?></td>
                                        <td><?php echo htmlentities($result->SiteName); ?></td>
                                        <td><?php echo htmlentities($result->doj); ?></td>
                                        <td>
@@ -218,8 +214,9 @@
                                            <?php } ?>
                                        </td>
                                        <td>
-                                           <a href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>"><i class="fa fa-edit"
-                                                   style="color:green"></i></a>
+                                           <a href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>">
+                                               <i class="fa fa-edit" style="color:green"></i>
+                                           </a>
                                            <?php if ($result->Status == 1) { ?>
                                                <a href="employees.php?inid=<?php echo htmlentities($result->id); ?>"
                                                    onclick="return confirm('Are you sure you want to inactive this employee?');"><i
@@ -255,7 +252,6 @@ if (isset($_GET['delid'])) {
                                        </td>
                                    </tr>
                                    <?php
-                                   $cnt++;
                                }
                            }
                            ?>
