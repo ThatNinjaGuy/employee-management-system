@@ -110,9 +110,14 @@
             padding: 8px; /* Adds padding for better readability */
         }
 
-        #employeeTable th {
-            /* background-color: #f2f2f2; Optional: Adds a background color to header */
-            /* text-align: center; Centers text in header cells */
+        /* #employeeTable th {
+            background-color: #f2f2f2;
+            text-align: center;
+        } */
+
+        /* Change cursor to pointer for clickable columns */
+        .clickable-row td:not(:last-child) {
+            cursor: pointer;
         }
     </style>
 </head>
