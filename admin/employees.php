@@ -1,35 +1,24 @@
 <?php
     session_start();
+    // error_reporting(E_ALL);
     error_reporting(0);
     include('../includes/dbconn.php');
     if(empty($_SESSION['usertype'])) {   
         header('location:index.php');
-        exit; // Add exit to stop further execution
+        exit;
     } else {
 
-    //Inactive  Employee    
-    if(isset($_GET['inid']))
-    {
-    $id=$_GET['inid'];
-    $status=0;
-    $sql = "UPDATE tblemployees set Status=:status  WHERE id=:id";
-    $query = $dbh->prepare($sql);
-    $query -> bindParam(':id',$id, PDO::PARAM_STR);
-    $query -> bindParam(':status',$status, PDO::PARAM_STR);
-    $query -> execute();
-    header('location:employees.php');
-    }
-
-    //Activated Employee
-    if(isset($_GET['id'])){
-    $id=$_GET['id'];
-    $status=1;
-    $sql = "UPDATE tblemployees set Status=:status  WHERE id=:id";
-    $query = $dbh->prepare($sql);
-    $query -> bindParam(':id',$id, PDO::PARAM_STR);
-    $query -> bindParam(':status',$status, PDO::PARAM_STR);
-    $query -> execute();
-    header('location:employees.php');
+    // Handle AJAX request to update employee status
+    if (isset($_POST['empid']) && isset($_POST['status'])) {
+        $id = intval($_POST['empid']);
+        $status = intval($_POST['status']);
+        $sql = "UPDATE tblemployees SET Status=:status WHERE id=:id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
+        $query->execute();
+        echo json_encode(['success' => true]);
+        exit;
     }
  ?>
 
@@ -48,38 +37,103 @@
     <link rel="stylesheet" href="../assets/css/metisMenu.css">
     <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/css/slicknav.min.css">
-    <!-- amchart css -->
-    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-    <!-- Start datatable css -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
-    <!-- others css -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
     <link rel="stylesheet" href="../assets/css/typography.css">
     <link rel="stylesheet" href="../assets/css/default-css.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
-    <!-- modernizr css -->
     <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 20px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: red;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: green;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(25px);
+        }
+
+        .table th:first-child,
+        .table th:nth-child(2),
+        .table td:first-child,
+        .table td:nth-child(2) {
+            text-align: left;
+        }
+
+        /* Add border to the table */
+        #employeeTable {
+            border-collapse: collapse; /* Ensures borders are shared between cells */
+            width: 100%; /* Ensures the table takes full width */
+        }
+
+        #employeeTable th, #employeeTable td {
+            border: 1px solid #ddd; /* Adds a border to table cells */
+            padding: 8px; /* Adds padding for better readability */
+        }
+
+        /* #employeeTable th {
+            background-color: #f2f2f2;
+            text-align: center;
+        } */
+
+        /* Change cursor to pointer for clickable columns */
+        .clickable-row td:not(:last-child) {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- preloader area start -->
     <div id="preloader">
         <div class="loader"></div>
     </div>
-    <!-- preloader area end -->
     
     <div class="page-container">
-        <!-- sidebar menu area start -->
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                <a href="dashboard.php">
-    <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
-</a>
-
+                    <a href="dashboard.php">
+                        <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
+                    </a>
                 </div>
             </div>
             <div class="main-menu">
@@ -91,36 +145,26 @@
                 </div>
             </div>
         </div>
-        <!-- sidebar menu area end -->
-        <!-- main content area start -->
+        
         <div class="main-content">
-            <!-- header area start -->
             <div class="header-area">
                 <div class="row align-items-center">
-                    
                     <div class="col-md-6 col-sm-8 clearfix">
                         <div class="nav-btn pull-left">
                             <span></span>
                             <span></span>
                             <span></span>
                         </div>
-                        
                     </div>
-                   
                     <div class="col-md-6 col-sm-4 clearfix">
                         <ul class="notification-area pull-right">
                             <li id="full-view"><i class="ti-fullscreen"></i></li>
                             <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-
-                            
-                            <?php //include '../includes/admin-notification.php'?>
-
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- header area end -->
-            <!-- page title area start -->
+            
             <div class="page-title-area">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
@@ -129,11 +173,9 @@
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
                                 <li><span>Employee Management</span></li>
-                                
                             </ul>
                         </div>
                     </div>
-                    
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
                             <img class="avatar user-thumb" src="../assets/images/admin.png" alt="avatar">
@@ -145,178 +187,139 @@
                     </div>
                 </div>
             </div>
-            <!-- page title area end -->
+            
             <div class="main-content-inner">
-                
-                
-                <!-- row area start -->
                 <div class="row">
-                    <!-- Dark table start -->
                     <div class="col-12 mt-5">
-                    
                         <div class="card">
-                        
-
-                        <?php if($error){?><div class="alert alert-danger alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($error); ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            
-                             </div><?php } 
-                                 else if($msg){?><div class="alert alert-success alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($msg); ?> 
-                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                 </div><?php }?>
-
                             <div class="card-body">
-                                <div class="data-tables datatable-dark">
-                                <div class="text-center mb-3">
-    <a href="add-employee.php" class="btn btn-sm btn-info mr-2">Add New Employee</a>
-    <a href="generate_pdf.php" class="btn btn-sm btn-primary mr-2">Download PDF</a>
-    <a href="generate_xls.php" class="btn btn-sm btn-success">Download XLS</a>
-</div>
-                                    <table id="dataTable3" class="table table-hover table-striped text-center">
+                                <div class="data-tables">
+                                    <div class="text-center mb-3">
+                                        <a href="add-employee.php" class="btn btn-sm btn-info mr-2">Add New Employee</a>
+                                        <a href="generate_pdf.php" class="btn btn-sm btn-primary mr-2">Download PDF</a>
+                                        <a href="generate_xls.php" class="btn btn-sm btn-success">Download XLS</a>
+                                    </div>
+                                    <table id="employeeTable" class="table table-hover table-striped text-center">
                                         <thead class="text-capitalize">
                                             <tr>
-                                                <th>#</th>
                                                 <th>Name</th>
-                                                <th>Employe ID</th>
                                                 <th>Site</th>
                                                 <th>Joined On</th>
                                                 <th>Status</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php 
+                                            $sql = "SELECT e.EmpId, e.FirstName, e.LastName, s.name AS SiteName, e.Status, e.id, e.doj 
+                                                    FROM tblemployees e
+                                                    LEFT JOIN tblsite s ON e.Site = s.id
+                                                    ORDER BY e.doj DESC";
+                                            $query = $dbh->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                    <?php 
-                                   $sql = "SELECT e.EmpId, e.FirstName, e.LastName, s.name AS SiteName, e.Status, e.id, e.doj 
-                                   FROM tblemployees e
-                                   LEFT JOIN tblsite s ON e.Site = s.id";
-                           $query = $dbh->prepare($sql);
-                           $query->execute();
-                           $results = $query->fetchAll(PDO::FETCH_OBJ);
-                           $cnt = 1;
-                           if ($query->rowCount() > 0) {
-                               foreach ($results as $result) {
-                                   ?>
-                                   <tr>
-                                       <td><?php echo htmlentities($cnt); ?></td>
-                                       <td><?php echo htmlentities($result->FirstName); ?>&nbsp;<?php echo htmlentities($result->LastName); ?></td>
-                                       <td><?php echo htmlentities($result->EmpId); ?></td>
-                                       <td><?php echo htmlentities($result->SiteName); ?></td>
-                                       <td><?php echo htmlentities($result->doj); ?></td>
-                                       <td>
-                                           <?php
-                                           $status = $result->Status;
-                                           if ($status) {
-                                               ?>
-                                               <span class="badge badge-pill badge-success">Active</span>
-                                           <?php } else { ?>
-                                               <span class="badge badge-pill badge-danger">Inactive</span>
-                                           <?php } ?>
-                                       </td>
-                                       <td>
-                                           <a href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>"><i class="fa fa-edit"
-                                                   style="color:green"></i></a>
-                                           <?php if ($result->Status == 1) { ?>
-                                               <a href="employees.php?inid=<?php echo htmlentities($result->id); ?>"
-                                                   onclick="return confirm('Are you sure you want to inactive this employee?');"><i
-                                                       class="fa fa-times-circle" style="color:red" title="Inactive"></i></a>
-                                           <?php } else { ?>
-                                               <a href="employees.php?id=<?php echo htmlentities($result->id); ?>"
-                                                   onclick="return confirm('Are you sure you want to active this employee?');"><i
-                                                       class="fa fa-check" style="color:green" title="Active"></i></a>
-                                           <?php } ?>
-                                           <a href="employees.php?delid=<?php echo htmlentities($result->id); ?>" onclick="return confirm('Are you sure you want to delete this employee?');">
-    <i class="fa fa-trash" style="color: red" title="Delete"></i>
-</a>
+                                            // Convert results to JSON for logging
+                                            // $jsonResults = json_encode($results);
+                                            // echo "<script>console.log('Database Results:', $jsonResults);</script>";
 
-<?php
-// Add the following code to handle the deletion logic
-
-if (isset($_GET['delid'])) {
-    $id = intval($_GET['delid']);
-    
-    // Soft delete by updating the status to -1 or any value indicating deleted
-      $sql = "DELETE from  tblemployees  WHERE id=:id";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT);
-    $query->execute();
-
-    // Add any additional logic you need for deleting records
-    // You may also consider hard delete by using DELETE query if necessary
-
-    echo "<script>alert('Employee deleted successfully');</script>";
-    echo "<script>window.location.href='employees.php'</script>";
-}
-?>
-                                       </td>
-                                   </tr>
-                                   <?php
-                                   $cnt++;
-                               }
-                           }
-                           ?>
-                           
-
-                                    </tbody>
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
+                                                    ?>
+                                                    <tr class="clickable-row" data-href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>">
+                                                        <td><?php echo htmlentities($result->FirstName); ?>&nbsp;<?php echo htmlentities($result->LastName); ?></td>
+                                                        <td><?php echo htmlentities($result->SiteName); ?></td>
+                                                        <td><?php echo htmlentities($result->doj); ?></td>
+                                                        <td>
+                                                            <label class="custom-switch">
+                                                                <input type="checkbox" class="status-switch" data-id="<?php echo $result->id; ?>" <?php echo $result->Status ? 'checked' : ''; ?>>
+                                                                <span class="slider"></span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Dark table end -->
-                    
                 </div>
-                <!-- row area end -->
-                
-                </div>
-                <!-- row area start-->
             </div>
             <?php include '../includes/footer.php' ?>
         </div>
-        <!-- main content area end -->
-
-        
-        <!-- footer area end-->
     </div>
-    <!-- jquery latest version -->
+    
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
-    <!-- bootstrap 4 js -->
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/owl.carousel.min.js"></script>
     <script src="../assets/js/metisMenu.min.js"></script>
     <script src="../assets/js/jquery.slimscroll.min.js"></script>
     <script src="../assets/js/jquery.slicknav.min.js"></script>
-
-    <!-- start chart js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <!-- start highcharts js -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <!-- start zingchart js -->
-    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    <script>
-    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
-    </script>
-    <!-- all line chart activation -->
-    <script src="assets/js/line-chart.js"></script>
-    <!-- all pie chart -->
-    <script src="assets/js/pie-chart.js"></script>
-
-        <!-- Start datatable js -->
-        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-    
-    <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Initialize DataTables with custom sorting for the Status column
+        $('#employeeTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "order": [[2, "desc"], [3, "desc"]], // Primary order by Joined On, secondary by Status
+            "columnDefs": [
+                {
+                    "targets": 3, // Index of the Status column
+                    "orderDataType": "dom-checkbox"
+                }
+            ]
+        });
+
+        // Custom sorting for checkbox columns
+        $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
+            return this.api().column(col, {order:'index'}).nodes().map(function(td, i) {
+                return $('input', td).prop('checked') ? 1 : 0;
+            });
+        };
+
+        $('.clickable-row').on('click', 'td:not(:nth-child(4), :nth-child(5))', function() {
+            window.location = $(this).closest('tr').data('href');
+        });
+
+        $('.status-switch').click(function(event) {
+            event.stopPropagation();
+        });
+
+        $('.status-switch').change(function() {
+            var empId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: 'employees.php',
+                type: 'POST',
+                data: { empid: empId, status: status },
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        alert('Employee status updated successfully');
+                    } else {
+                        alert('Failed to update employee status');
+                    }
+                }
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>

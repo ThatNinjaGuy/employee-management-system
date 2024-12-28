@@ -1,6 +1,8 @@
 <!-- : The script starts a session and checks if the usertype session variable is set. If not, it redirects the user to index.php and stops further execution. -->
 <?php
     session_start();
+    // error_reporting(E_ALL);
+    error_reporting(0);
     include('../includes/dbconn.php');
     
     if(empty($_SESSION['usertype'])) {   
