@@ -31,6 +31,19 @@
     $query -> execute();
     header('location:employees.php');
     }
+
+    // Handle AJAX request to update employee status
+    if (isset($_POST['empid']) && isset($_POST['status'])) {
+        $id = intval($_POST['empid']);
+        $status = intval($_POST['status']);
+        $sql = "UPDATE tblemployees SET Status=:status WHERE id=:id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
+        $query->execute();
+        echo json_encode(['success' => true]);
+        exit;
+    }
  ?>
 
 <!doctype html>
@@ -62,6 +75,60 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <!-- modernizr css -->
     <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 20px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: red;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: green;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(25px);
+        }
+
+        /* New CSS for left alignment */
+        .table th:first-child, /* Target the first column header (Name) */
+        .table th:nth-child(2), /* Target the second column header (Site) */
+        .table td:first-child, /* Target the first column (Name) */
+        .table td:nth-child(2) { /* Target the second column (Site) */
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
@@ -199,56 +266,20 @@
                            if ($query->rowCount() > 0) {
                                foreach ($results as $result) {
                                    ?>
-                                   <tr>
+                                   <tr class="clickable-row" data-href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>">
                                        <td><?php echo htmlentities($result->FirstName); ?>&nbsp;<?php echo htmlentities($result->LastName); ?></td>
                                        <td><?php echo htmlentities($result->SiteName); ?></td>
                                        <td><?php echo htmlentities($result->doj); ?></td>
                                        <td>
-                                           <?php
-                                           $status = $result->Status;
-                                           if ($status) {
-                                               ?>
-                                               <span class="badge badge-pill badge-success">Active</span>
-                                           <?php } else { ?>
-                                               <span class="badge badge-pill badge-danger">Inactive</span>
-                                           <?php } ?>
+                                           <label class="custom-switch">
+                                               <input type="checkbox" class="status-switch" data-id="<?php echo $result->id; ?>" <?php echo $result->Status ? 'checked' : ''; ?>>
+                                               <span class="slider"></span>
+                                           </label>
                                        </td>
                                        <td>
-                                           <a href="update-employee.php?empid=<?php echo htmlentities($result->id); ?>">
-                                               <i class="fa fa-edit" style="color:green"></i>
-                                           </a>
-                                           <?php if ($result->Status == 1) { ?>
-                                               <a href="employees.php?inid=<?php echo htmlentities($result->id); ?>"
-                                                   onclick="return confirm('Are you sure you want to inactive this employee?');"><i
-                                                       class="fa fa-times-circle" style="color:red" title="Inactive"></i></a>
-                                           <?php } else { ?>
-                                               <a href="employees.php?id=<?php echo htmlentities($result->id); ?>"
-                                                   onclick="return confirm('Are you sure you want to active this employee?');"><i
-                                                       class="fa fa-check" style="color:green" title="Active"></i></a>
-                                           <?php } ?>
                                            <a href="employees.php?delid=<?php echo htmlentities($result->id); ?>" onclick="return confirm('Are you sure you want to delete this employee?');">
-    <i class="fa fa-trash" style="color: red" title="Delete"></i>
-</a>
-
-<?php
-// Add the following code to handle the deletion logic
-
-if (isset($_GET['delid'])) {
-    $id = intval($_GET['delid']);
-    
-    // Soft delete by updating the status to -1 or any value indicating deleted
-      $sql = "DELETE from  tblemployees  WHERE id=:id";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT);
-    $query->execute();
-
-    // Add any additional logic you need for deleting records
-    // You may also consider hard delete by using DELETE query if necessary
-
-    echo "<script>alert('Employee deleted successfully');</script>";
-    echo "<script>window.location.href='employees.php'</script>";
-}
-?>
+                                               <i class="fa fa-trash" style="color: red" title="Delete"></i>
+                                           </a>
                                        </td>
                                    </tr>
                                    <?php
@@ -313,6 +344,38 @@ if (isset($_GET['delid'])) {
     <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Add click event to table rows for the first three columns
+        $('.clickable-row').on('click', 'td:not(:nth-child(4), :nth-child(5))', function() {
+            window.location = $(this).closest('tr').data('href');
+        });
+
+        // Prevent row click when interacting with the switch
+        $('.status-switch').click(function(event) {
+            event.stopPropagation();
+        });
+
+        $('.status-switch').change(function() {
+            var empId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: 'employees.php',
+                type: 'POST',
+                data: { empid: empId, status: status },
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        alert('Employee status updated successfully');
+                    } else {
+                        alert('Failed to update employee status');
+                    }
+                }
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
