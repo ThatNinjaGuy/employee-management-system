@@ -186,7 +186,7 @@ if(empty($_SESSION['usertype'])) {
                 <div class="row">
                     <div class="col-lg-6 col-ml-12">
                         <div class="row">
-                            <div class="col-12 mt-5">
+                            <div class="col-12 mt-2">
                                 <!-- Display error or success messages -->
                                 <?php if($error){?>
                                     <div class="alert alert-danger alert-dismissible fade show">
