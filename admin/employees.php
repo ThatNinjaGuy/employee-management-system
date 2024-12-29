@@ -172,7 +172,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Employee Section</h4>
+                            <h4 class="page-title pull-left">Employees</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
                                 <li><span>Employee Management</span></li>
