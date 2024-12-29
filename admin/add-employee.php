@@ -1,8 +1,9 @@
 <?php
 session_start();
 // Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+error_reporting(0);
 
 include('../includes/dbconn.php');
 
@@ -193,10 +194,10 @@ if(empty($_SESSION['usertype'])) {
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Add Employee Section</h4>
+                            <h4 class="page-title pull-left">Add Employee</h4>
                             <ul class="breadcrumbs pull-left"> 
                                 <li><a href="employees.php">Employee</a></li>
-                                <li><span>Add</span></li>
+                                <li><span>Add Employee</span></li>
                             </ul>
                         </div>
                     </div>
