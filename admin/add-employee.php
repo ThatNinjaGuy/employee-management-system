@@ -7,6 +7,7 @@ error_reporting(0);
 
 include('../includes/dbconn.php');
 
+// Check if the user is logged in and has a user type
 if(empty($_SESSION['usertype'])) {   
     header('location:index.php');
     exit;
@@ -81,12 +82,15 @@ if(empty($_SESSION['usertype'])) {
             if ($query->execute()) {
                 $lastInsertId = $dbh->lastInsertId();
                 if ($lastInsertId) {
+                    // Redirect to employees page if successful
                     header('Location: employees.php');
                     exit;
                 } else {
+                    // Alert if something went wrong
                     echo "<script>alert('ERROR: Something went wrong. Please try again.');</script>";
                 }
             } else {
+                // Alert if something went wrong
                 echo "<script>alert('ERROR: Something went wrong. Please try again.');</script>";
             }
         }
@@ -232,119 +236,113 @@ if(empty($_SESSION['usertype'])) {
                                 <div class="card">
                                     <form name="addemp" method="POST">
                                         <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="example-text-input" class="col-form-label">First Name <span style="color: red;">*</span></label>
-                                                <input class="form-control" name="firstName" type="text" required id="example-text-input">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-text-input" class="col-form-label">First Name <span style="color: red;">*</span></label>
+                                                    <input class="form-control" name="firstName" type="text" required id="example-text-input">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-text-input" class="col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                    <input class="form-control" name="lastName" type="text" autocomplete="off" required id="example-text-input">
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="example-text-input" class="col-form-label">Last Name <span style="color: red;">*</span></label>
-                                                <input class="form-control" name="lastName" type="text" autocomplete="off" required id="example-text-input">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-text-input" class="col-form-label">Aadhaar Number <span style="color: red;">*</span></label>
+                                                    <input class="form-control" name="govID" type="text" autocomplete="off" required id="example-text-input">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Designation <span style="color: red;">*</span></label>
+                                                    <select class="custom-select" name="designation" required autocomplete="off">
+                                                        <option value="">Choose..</option>
+                                                        <?php $sql = "SELECT * from tbldesignation";
+                                                        $query = $dbh -> prepare($sql);
+                                                        $query->execute();
+                                                        $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                        if($query->rowCount() > 0){
+                                                        foreach($results as $result)
+                                                        {   ?> 
+                                                        <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->name);?></option>
+                                                        <?php }} ?>
+                                                    </select>
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="example-text-input" class="col-form-label">Aadhaar Number <span style="color: red;">*</span></label>
-                                                <input class="form-control" name="govID" type="text" autocomplete="off" required id="example-text-input">
-                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Supplier <span style="color: red;">*</span></label>
+                                                    <select class="custom-select" name="supplier" id="supplier" required autocomplete="off">
+                                                        <option value="">Choose..</option>
+                                                        <?php
+                                                        $sql = "SELECT * FROM tblsupplier";
+                                                        $query = $dbh->prepare($sql);
+                                                        $query->execute();
+                                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                            <div class="form-group">
-                                                <label class="col-form-label">Designation <span style="color: red;">*</span></label>
-                                                <select class="custom-select" name="designation" required autocomplete="off">
-                                                    <option value="">Choose..</option>
-                                                    <?php $sql = "SELECT * from tbldesignation";
-                                                    $query = $dbh -> prepare($sql);
-                                                    $query->execute();
-                                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                                    if($query->rowCount() > 0){
-                                                    foreach($results as $result)
-                                                    {   ?> 
-                                                    <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->name);?></option>
-                                                    <?php }} ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="col-form-label">Supplier <span style="color: red;">*</span></label>
-                                                <select class="custom-select" name="supplier" id="supplier" required autocomplete="off">
-                                                    <option value="">Choose..</option>
-                                                    <?php
-                                                    $sql = "SELECT * FROM tblsupplier";
-                                                    $query = $dbh->prepare($sql);
-                                                    $query->execute();
-                                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-                                                    if ($query->rowCount() > 0) {
-                                                        foreach ($results as $result) {
-                                                            ?>
-                                                            <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->name); ?></option>
-                                                            <?php
+                                                        if ($query->rowCount() > 0) {
+                                                            foreach ($results as $result) {
+                                                                ?>
+                                                                <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->name); ?></option>
+                                                                <?php
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
-                                                </select>
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Group <span style="color: red;">*</span></label>
+                                                    <select class="custom-select" name="group" id="group" required autocomplete="off">
+                                                        <option value="">Choose..</option>
+                                                    </select>
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label class="col-form-label">Group <span style="color: red;">*</span></label>
-                                                <select class="custom-select" name="group" id="group" required autocomplete="off">
-                                                    <option value="">Choose..</option>
-                                                </select>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Gender</label>
+                                                    <select class="custom-select" name="gender" autocomplete="off">
+                                                        <option value="">Choose..</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label">Preferred Site <span style="color: red;">*</span></label>
+                                                    <select class="custom-select" name="site" required autocomplete="off">
+                                                        <option value="">Choose..</option>
+                                                        <?php $sql = "SELECT * from tblsite";
+                                                        $query = $dbh -> prepare($sql);
+                                                        $query->execute();
+                                                        $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                        if($query->rowCount() > 0){
+                                                        foreach($results as $result)
+                                                        {   ?> 
+                                                        <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->name);?></option>
+                                                        <?php }} ?>
+                                                    </select>
+                                                </div>
                                             </div>
 
-                                            <script>
-                                                document.getElementById('supplier').addEventListener('change', function () {
-                                                    var supplierId = this.value;
-
-                                                    var xhr = new XMLHttpRequest();
-                                                    xhr.open('GET', 'get_groups.php?supplier_id=' + supplierId, true);
-                                                    xhr.onreadystatechange = function () {
-                                                        if (xhr.readyState == 4 && xhr.status == 200) {
-                                                            document.getElementById('group').innerHTML = xhr.responseText;
-                                                        }
-                                                    };
-                                                    xhr.send();
-                                                });
-                                            </script>
-
-                                            <div class="form-group">
-                                                <label class="col-form-label">Preferred Site <span style="color: red;">*</span></label>
-                                                <select class="custom-select" name="site" required autocomplete="off">
-                                                    <option value="">Choose..</option>
-                                                    <?php $sql = "SELECT * from tblsite";
-                                                    $query = $dbh -> prepare($sql);
-                                                    $query->execute();
-                                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                                    if($query->rowCount() > 0){
-                                                    foreach($results as $result)
-                                                    {   ?> 
-                                                    <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->name);?></option>
-                                                    <?php }} ?>
-                                                </select>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-date-input" class="col-form-label">D.O.B</label>
+                                                    <input class="form-control" type="date" name="dob" id="birthdate">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-date-input" class="col-form-label">Rate (₹ /day)</label>
+                                                    <input class="form-control" type="text" name="rate" id="rate">
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label class="col-form-label">Gender</label>
-                                                <select class="custom-select" name="gender" autocomplete="off">
-                                                    <option value="">Choose..</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="example-date-input" class="col-form-label">D.O.J</label>
+                                                    <input class="form-control" type="date" name="doj" id="doj" value="<?php echo date('Y-m-d'); ?>">
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="example-date-input" class="col-form-label">D.O.B</label>
-                                                <input class="form-control" type="date" name="dob" id="birthdate" >
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="example-date-input" class="col-form-label">D.O.j</label>
-                                                <input class="form-control" type="date" name="doj" id="doj" >
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="example-date-input" class="col-form-label">Rate</label>
-                                                <input class="form-control" type="text" name="rate" id="doj" >
-                                            </div>
                                             <!-- Sticky submit buttons -->
                                             <div class="sticky-submit" style="display: flex;">
                                                 <button class="btn btn-secondary" type="button" onclick="window.history.back();" style="flex: 1; margin-right: 5px;">Cancel</button>
@@ -381,6 +379,22 @@ if(empty($_SESSION['usertype'])) {
     <script src="assets/js/pie-chart.js"></script>
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Add onchange event to supplier select
+        document.getElementById('supplier').addEventListener('change', function () {
+            var supplierId = this.value;
+            // Use AJAX to fetch groups based on the selected supplier
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_groups.php?supplier_id=' + supplierId, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Update the groups select with the fetched options
+                    document.getElementById('group').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+    </script>
 </body>
 
 </html>
