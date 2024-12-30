@@ -291,7 +291,7 @@
                                 <div class="modal-body">
                                 
                                     <select class="custom-select" name="status" required="">
-                                        <option value="">Choose...</option>
+                                        <option value="" disabled selected>Choose..</option>
                                         <option value="1">Approve</option>
                                         <option value="2">Decline</option>
                                     </select></p>

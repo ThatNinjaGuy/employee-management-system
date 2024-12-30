@@ -153,7 +153,7 @@
 
                             <div class="card-body">
                                 <div class="data-tables">
-                                    <center><a href="add-designation.php" class="btn btn-sm btn-info">Add New Designation</a></center>
+                                    <center><a href="add-designation.php" class="btn btn-sm btn-info">Add a new role</a></center>
                                     <table id="designationTable" class="table table-hover table-striped text-center">
                                         <thead class="text-capitalize">
                                             <tr>

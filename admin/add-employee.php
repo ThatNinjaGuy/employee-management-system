@@ -104,7 +104,7 @@ if(empty($_SESSION['usertype'])) {
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Employee Leave</title>
+    <title>Add Employee</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="../assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -255,7 +255,7 @@ if(empty($_SESSION['usertype'])) {
                                                 <div class="form-group col-md-6">
                                                     <label class="col-form-label">Designation <span style="color: red;">*</span></label>
                                                     <select class="custom-select" name="designation" required autocomplete="off">
-                                                        <option value="">Choose..</option>
+                                                        <option value="" disabled selected>Choose..</option>
                                                         <?php $sql = "SELECT * from tbldesignation";
                                                         $query = $dbh -> prepare($sql);
                                                         $query->execute();
@@ -273,7 +273,7 @@ if(empty($_SESSION['usertype'])) {
                                                 <div class="form-group col-md-6">
                                                     <label class="col-form-label">Supplier <span style="color: red;">*</span></label>
                                                     <select class="custom-select" name="supplier" id="supplier" required autocomplete="off">
-                                                        <option value="">Choose..</option>
+                                                        <option value="" disabled selected>Choose..</option>
                                                         <?php
                                                         $sql = "SELECT * FROM tblsupplier";
                                                         $query = $dbh->prepare($sql);
@@ -291,9 +291,9 @@ if(empty($_SESSION['usertype'])) {
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="col-form-label">Group <span style="color: red;">*</span></label>
+                                                    <label class="col-form-label">Group<span style="color: red;">*</span></label>
                                                     <select class="custom-select" name="group" id="group" required autocomplete="off">
-                                                        <option value="">Choose..</option>
+                                                        <option value="" disabled selected>Choose..</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -302,7 +302,7 @@ if(empty($_SESSION['usertype'])) {
                                                 <div class="form-group col-md-6">
                                                     <label class="col-form-label">Gender</label>
                                                     <select class="custom-select" name="gender" autocomplete="off">
-                                                        <option value="">Choose..</option>
+                                                        <option value="" disabled selected>Choose..</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
                                                         <option value="Other">Other</option>
@@ -311,7 +311,7 @@ if(empty($_SESSION['usertype'])) {
                                                 <div class="form-group col-md-6">
                                                     <label class="col-form-label">Preferred Site <span style="color: red;">*</span></label>
                                                     <select class="custom-select" name="site" required autocomplete="off">
-                                                        <option value="">Choose..</option>
+                                                        <option value="" disabled selected>Choose..</option>
                                                         <?php $sql = "SELECT * from tblsite";
                                                         $query = $dbh -> prepare($sql);
                                                         $query->execute();
