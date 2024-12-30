@@ -182,7 +182,7 @@
                                                     $totalEmployees += $result->employee_count;
                                                     $totalActiveEmployees += $result->active_count;
                                                     ?>
-                                                    <tr class="clickable-row" data-href="update-designation.php?desid=<?php echo htmlentities($result->id); ?>">
+                                                    <tr class="clickable-row" data-href="edit-designation.php?desid=<?php echo htmlentities($result->id); ?>">
                                                         <td><?php echo htmlentities($result->name); ?></td>
                                                         <td><?php echo htmlentities($result->employee_count); ?></td>
                                                         <td><?php echo htmlentities($result->active_count); ?></td>
