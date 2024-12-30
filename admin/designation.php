@@ -4,19 +4,8 @@
     include('../includes/dbconn.php');
     if(empty($_SESSION['usertype'])) {   
         header('location:index.php');
-        exit; // Add exit to stop further execution
-    } else { 
-    if(isset($_GET['del']))
-    {
-    $id=$_GET['del'];
-    $sql = "DELETE from  tbldesignation  WHERE id=:id";
-    $query = $dbh->prepare($sql);
-    $query -> bindParam(':id',$id, PDO::PARAM_STR);
-    $query -> execute();
-    $msg="The selected designation has been deleted";
-
-    }
-
+        exit;
+    } else {
 ?>
 
 <!doctype html>
@@ -25,7 +14,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Employee Leave</title>
+    <title>Roles</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="../assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -48,24 +37,44 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <!-- modernizr css -->
     <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        /* Add this CSS rule to change the cursor to a pointer on hover */
+        .clickable-row:hover {
+            cursor: pointer;
+        }
+
+        /* Left-align the first column in the table */
+        #designationTable th:first-child,
+        #designationTable td:first-child {
+            text-align: left;
+        }
+
+        /* Add border to the table and its cells */
+        #designationTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #designationTable th, #designationTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+    </style>
 </head>
 
 <body>
-    <!-- preloader area start -->
     <div id="preloader">
         <div class="loader"></div>
     </div>
-    <!-- preloader area end -->
     
     <div class="page-container">
-        <!-- sidebar menu area start -->
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                <a href="dashboard.php">
-    <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
-</a>
-
+                    <a href="dashboard.php">
+                        <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
+                    </a>
                 </div>
             </div>
             <div class="main-menu">
@@ -77,22 +86,17 @@
                 </div>
             </div>
         </div>
-        <!-- sidebar menu area end -->
-        <!-- main content area start -->
+        
         <div class="main-content">
-            <!-- header area start -->
             <div class="header-area">
                 <div class="row align-items-center">
-                    
                     <div class="col-md-6 col-sm-8 clearfix">
                         <div class="nav-btn pull-left">
                             <span></span>
                             <span></span>
                             <span></span>
                         </div>
-                        
                     </div>
-                   
                     <div class="col-md-6 col-sm-4 clearfix">
                         <ul class="notification-area pull-right">
                             <li id="full-view"><i class="ti-fullscreen"></i></li>
@@ -105,21 +109,18 @@
                     </div>
                 </div>
             </div>
-            <!-- header area end -->
-            <!-- page title area start -->
+            
             <div class="page-title-area">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Designation Section</h4>
+                            <h4 class="page-title pull-left">Employee Roles</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
-                                <li><span>Designation Management</span></li>
-                                
+                                <li><span>Manage Employee Roles</span></li>
                             </ul>
                         </div>
                     </div>
-                    
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
                             <img class="avatar user-thumb" src="../assets/images/admin.png" alt="avatar">
@@ -131,15 +132,10 @@
                     </div>
                 </div>
             </div>
-            <!-- page title area end -->
+            
             <div class="main-content-inner">
-                
-                
-                <!-- row area start -->
                 <div class="row">
-                    <!-- Dark table start -->
                     <div class="col-12 mt-5">
-                    
                         <div class="card">
                         
 
@@ -156,61 +152,65 @@
                                  </div><?php }?>
 
                             <div class="card-body">
-                                <div class="data-tables datatable-dark">
-                                <center><a href="add-designation.php" class="btn btn-sm btn-info">Add New Designation</a></center>
-                                    <table id="dataTable3" class="table table-hover table-striped text-center">
+                                <div class="data-tables">
+                                    <center><a href="add-designation.php" class="btn btn-sm btn-info">Add New Designation</a></center>
+                                    <table id="designationTable" class="table table-hover table-striped text-center">
                                         <thead class="text-capitalize">
                                             <tr>
-                                                <th>#</th>
-                
                                                 <th>Name</th>
-                                            
-                                                <th>Created Date</th>
-                                                
-                                                <th></th>
+                                                <th>Total Employees</th>
+                                                <th>Active Employees</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                    <?php $sql = "SELECT * from tbldesignation";
-                                    $query = $dbh -> prepare($sql);
-                                    $query->execute();
-                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                    $cnt=1;
-                                    if($query->rowCount() > 0)
-                                    {
-                                    foreach($results as $result)
-                                    {               ?>  
-                                        <tr>
-                                            <td> <?php echo htmlentities($cnt);?></td>
-                                            <td><?php echo htmlentities($result->name);?></td>
-                                            <td><?php echo htmlentities($result->CreationDate);?></td>
-                                            <td><a href="edit-designation.php?desid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" style="color:green"></i></a><a href="designation.php?del=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you want to delete');"> <i class="fa fa-trash" style="color:red"></i></a></td>
-                                        </tr>
-                                         <?php $cnt++;} }?>
-                                    </tbody>
+                                            <?php 
+                                            $sql = "SELECT d.id, d.name, 
+                                                           COUNT(e.id) as employee_count, 
+                                                           SUM(CASE WHEN e.Status = 1 THEN 1 ELSE 0 END) as active_count
+                                                    FROM tbldesignation d
+                                                    LEFT JOIN tblemployees e ON e.Designation = d.id
+                                                    GROUP BY d.id, d.name";
+                                            $query = $dbh->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                            $totalEmployees = 0;
+                                            $totalActiveEmployees = 0;
+
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
+                                                    $totalEmployees += $result->employee_count;
+                                                    $totalActiveEmployees += $result->active_count;
+                                                    ?>
+                                                    <tr class="clickable-row" data-href="update-designation.php?desid=<?php echo htmlentities($result->id); ?>">
+                                                        <td><?php echo htmlentities($result->name); ?></td>
+                                                        <td><?php echo htmlentities($result->employee_count); ?></td>
+                                                        <td><?php echo htmlentities($result->active_count); ?></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td><strong>Total</strong></td>
+                                                <td><strong><?php echo htmlentities($totalEmployees); ?></strong></td>
+                                                <td><strong><?php echo htmlentities($totalActiveEmployees); ?></strong></td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Dark table end -->
-                    
                 </div>
-                <!-- row area end -->
-                
-                </div>
-                <!-- row area start-->
             </div>
             <?php include '../includes/footer.php' ?>
-        <!-- footer area end-->
         </div>
-        <!-- main content area end -->
-
-        
     </div>
-    <!-- jquery latest version -->
+    
     <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
-    <!-- bootstrap 4 js -->
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/owl.carousel.min.js"></script>
@@ -239,10 +239,25 @@
     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-    
-    <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#designationTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "order": [[1, "desc"]]
+        });
+
+        $('.clickable-row').on('click', function() {
+            window.location = $(this).data('href');
+        });
+    });
+    </script>
 </body>
 
 </html>
