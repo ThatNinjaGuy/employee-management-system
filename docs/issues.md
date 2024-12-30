@@ -21,3 +21,6 @@
    - **Problem**: The file dbconn.php contains the database credentials in plain text.
    - **Recommendation**: The file dbconn.php should be removed and the database credentials should be stored in the .env file.
    - **Priority**: High - This is a critical security vulnerability.
+
+4. Remove the following files from the project:
+   - admin/view-employees.php
