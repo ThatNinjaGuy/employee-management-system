@@ -25,7 +25,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Employee </title>
+    <title>Manage Groups</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="../assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -48,6 +48,26 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <!-- modernizr css -->
     <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        .clickable-row:hover {
+            cursor: pointer;
+        }
+
+        #groupTable th:first-child,
+        #groupTable td:first-child {
+            text-align: left;
+        }
+
+        #groupTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #groupTable th, #groupTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -77,44 +97,15 @@
                 </div>
             </div>
         </div>
-        <!-- sidebar menu area end -->
-        <!-- main content area start -->
         <div class="main-content">
-            <!-- header area start -->
-            <!-- <div class="header-area">
-                <div class="row align-items-center">
-                    
-                    <div class="col-md-6 col-sm-8 clearfix">
-                        <div class="nav-btn pull-left">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        
-                    </div>
-                   
-                    <div class="col-md-6 col-sm-4 clearfix">
-                        <ul class="notification-area pull-right">
-                            <li id="full-view"><i class="ti-fullscreen"></i></li>
-                            <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-
-                            
-                            <?php include '../includes/admin-notification.php'?>
-
-                        </ul>
-                    </div>
-                </div>
-            </div> -->
-            <!-- header area end -->
-            <!-- page title area start -->
             <div class="page-title-area">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Group Section</h4>
+                            <h4 class="page-title pull-left">Manage Groups</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="dashboard.php">Home</a></li>
-                                <li><span>Group Management</span></li>
+                                <li><span>Groups</span></li>
                                 
                             </ul>
                         </div>
@@ -123,7 +114,7 @@
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
                             <img class="avatar user-thumb" src="../assets/images/admin.png" alt="avatar">
-                            <h4 class="user-name dropdown-toggle" data-toggle="dropdown">ADMIN <i class="fa fa-angle-down"></i></h4>
+                            <h4 class="user-name dropdown-toggle" data-toggle="dropdown">ADMIN<i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="logout.php">Log Out</a>
                             </div>
@@ -138,7 +129,7 @@
                 <!-- row area start -->
                 <div class="row">
                     <!-- Dark table start -->
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                     
                         <div class="card">
                         
@@ -156,46 +147,37 @@
                                  </div><?php }?>
 
                             <div class="card-body">
-                                <div class="data-tables datatable-dark">
-                                <center><a href="add-group.php" class="btn btn-sm btn-info">Add New Group</a></center>
-                                <table id="dataTable3" class="table table-hover table-striped text-center">
-    <thead class="text-capitalize">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Supplier Name</th>
-            <th>Created Date</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $sql = "SELECT tblgroup.*, tblsupplier.name AS supplier_name FROM tblgroup
-                LEFT JOIN tblsupplier ON tblgroup.supplier_id = tblsupplier.id";
-        $query = $dbh->prepare($sql);
-        $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-        $cnt = 1;
-        if ($query->rowCount() > 0) {
-            foreach ($results as $result) { ?>
-                <tr>
-                    <td><?php echo htmlentities($cnt); ?></td>
-                    <td><a href="group-info.php?id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->name); ?></a></td>
-
-                    <td><?php echo htmlentities($result->supplier_name); ?></td>
-                    <td><?php echo htmlentities($result->creation_date); ?></td>
-                    <td>
-                        <a href="edit-group.php?deptid=<?php echo htmlentities($result->id); ?>"><i class="fa fa-edit" style="color:green"></i></a>
-                        <a href="group.php?del=<?php echo htmlentities($result->id); ?>" onclick="return confirm('Do you want to delete');"><i class="fa fa-trash" style="color:red"></i></a>
-                    </td>
-                </tr>
-            <?php
-                $cnt++;
-            }
-        } ?>
-    </tbody>
-</table>
-
+                                <div class="table-responsive">                                
+                                    <div class="mb-4">
+                                        <center><a href="add-group.php" class="btn btn-sm btn-info">Add New Group</a></center>
+                                    </div>
+                                    <table id="groupTable" class="table table-hover table-striped text-center">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Supplier Name</th>
+                                                <th>Created Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = "SELECT tblgroup.*, tblsupplier.name AS supplier_name FROM tblgroup
+                                                    LEFT JOIN tblsupplier ON tblgroup.supplier_id = tblsupplier.id";
+                                            $query = $dbh->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) { ?>
+                                                    <tr class="clickable-row" data-href="edit-group.php?deptid=<?php echo htmlentities($result->id); ?>">
+                                                        <td><?php echo htmlentities($result->name); ?></td>
+                                                        <td><?php echo htmlentities($result->supplier_name); ?></td>
+                                                        <td><?php echo htmlentities($result->creation_date); ?></td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                            } ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -250,6 +232,23 @@
     <!-- others plugins -->
     <script src="../assets/js/plugins.js"></script>
     <script src="../assets/js/scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#groupTable').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "order": [[0, "asc"]]
+            });
+
+            $('.clickable-row').on('click', function() {
+                window.location = $(this).data('href');
+            });
+        });
+    </script>
 </body>
 
 </html>
