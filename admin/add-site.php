@@ -18,9 +18,10 @@
     $lastInsertId = $dbh->lastInsertId();
 
     if($lastInsertId){
-    $msg="Site Created Successfully";
+        header('Location: site.php');
+        exit;
     } else {
-    $error="Something went wrong. Please try again";
+        $error="Something went wrong. Please try again";
     }
 
 }
@@ -33,7 +34,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin Panel - Employee </title>
+    <title>Add Site</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="../assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -56,6 +57,19 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <!-- modernizr css -->
     <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        .sticky-buttons {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+    </style>
 </head>
 
 <body>
@@ -119,9 +133,9 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Site Section</h4>
+                            <h4 class="page-title pull-left">Add Site</h4>
                             <ul class="breadcrumbs pull-left">
-                                <li><a href="department.php">Site</a></li>
+                                <li><a href="site.php">Sites</a></li>
                                 <li><span>Add</span></li>
                                 
                             </ul>
@@ -131,7 +145,7 @@
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
                             <img class="avatar user-thumb" src="../assets/images/admin.png" alt="avatar">
-                            <h4 class="user-name dropdown-toggle" data-toggle="dropdown">ADMIN <i class="fa fa-angle-down"></i></h4>
+                            <h4 class="user-name dropdown-toggle" data-toggle="dropdown">ADMIN<i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="logout.php">Log Out</a>
                             </div>
@@ -146,7 +160,7 @@
                 <!-- row area start -->
                 <div class="row">
                     <!-- Dark table start -->
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                     
                         <div class="card">
                         
@@ -165,19 +179,23 @@
                                 
                                 <form method="POST">
                                  <div class="card-body">
-                                        
-                                        <p class="text-muted font-14 mb-4">Please fill up the form in order to add new site</p>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="site-name" class="col-form-label">Site Name</label>
+                                                <input class="form-control" name="name" type="text" required id="site-name">
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Site Name</label>
-                                            <input class="form-control" name="name" type="text" required id="example-text-input" >
+                                            <div class="form-group col-md-6">
+                                                <label for="site-city" class="col-form-label">City</label>
+                                                <input class="form-control" name="city" type="text" autocomplete="off" required id="site-city">
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Site city</label>
-                                            <input class="form-control" name="city" type="text" required id="example-text-input" >
+
+                                        <!-- Sticky buttons -->
+                                        <div class="sticky-buttons">
+                                            <button class="btn btn-secondary" type="button" onclick="window.history.back();" style="flex: 1; margin-right: 5px;">Cancel</button>
+                                            <button class="btn btn-primary" name="add" id="add" type="submit" style="flex: 1; margin-left: 5px;">Add</button>
                                         </div>
-                                    <button class="btn btn-primary" name="add" id="add" type="submit">ADD</button>
-                                        
                                     </div>
                                     </form>
                         </div> 
