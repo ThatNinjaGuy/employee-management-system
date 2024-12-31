@@ -86,7 +86,7 @@ if(empty($_SESSION['usertype'])) {
             <div class="main-menu">
                 <div class="menu-inner">
                     <?php
-                        $page='department';
+                        $page='designation';
                         include '../includes/admin-sidebar.php';
                     ?>
                 </div>

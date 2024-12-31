@@ -91,7 +91,7 @@
             <div class="main-menu">
                 <div class="menu-inner">
                     <?php
-                        $page='department';
+                        $page='group';
                         include '../includes/admin-sidebar.php';
                     ?>
                 </div>
@@ -234,7 +234,7 @@
     <script src="../assets/js/scripts.js"></script>
     <script>
         $(document).ready(function() {
-            $('#groupTable').DataTable({
+            var table = $('#groupTable').DataTable({
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -244,7 +244,8 @@
                 "order": [[0, "asc"]]
             });
 
-            $('.clickable-row').on('click', function() {
+            // Use event delegation to handle click events on dynamically generated rows
+            $('#groupTable tbody').on('click', 'tr.clickable-row', function() {
                 window.location = $(this).data('href');
             });
         });

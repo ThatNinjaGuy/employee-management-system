@@ -253,7 +253,8 @@
             "order": [[1, "desc"]]
         });
 
-        $('.clickable-row').on('click', function() {
+        // Use event delegation to handle click events on dynamically generated rows
+        $('#designationTable tbody').on('click', 'tr.clickable-row', function() {
             window.location = $(this).data('href');
         });
     });

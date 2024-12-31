@@ -297,9 +297,9 @@
             });
         };
 
-        // Handle row click to navigate to employee update page
-        $('.clickable-row').on('click', 'td:not(:nth-child(4), :nth-child(5))', function() {
-            window.location = $(this).closest('tr').data('href');
+        // Use event delegation to handle click events on dynamically generated rows
+        $('#employeeTable tbody').on('click', 'tr.clickable-row', function() {
+            window.location = $(this).data('href');
         });
 
         // Prevent event propagation on status switch click

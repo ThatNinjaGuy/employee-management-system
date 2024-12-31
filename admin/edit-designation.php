@@ -88,7 +88,7 @@ if (isset($_POST['update'])) {
             <div class="main-menu">
                 <div class="menu-inner">
                     <?php
-                    $page = 'edit-designation';
+                    $page = 'designation';
                     include '../includes/admin-sidebar.php';
                     ?>
                 </div>

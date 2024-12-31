@@ -73,7 +73,7 @@ if (empty($_SESSION['usertype'])) {
             <div class="main-menu">
                 <div class="menu-inner">
                     <?php
-                    $page = 'department';
+                    $page = 'site';
                     include '../includes/admin-sidebar.php';
                     ?>
                 </div>
@@ -213,7 +213,8 @@ if (empty($_SESSION['usertype'])) {
                 "autoWidth": false
             });
 
-            $('.clickable-row').on('click', function() {
+            // Use event delegation to handle click events on dynamically generated rows
+            $('#siteTable tbody').on('click', 'tr.clickable-row', function() {
                 window.location = $(this).data('href');
             });
         });

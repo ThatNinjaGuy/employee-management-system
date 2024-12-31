@@ -3,10 +3,6 @@
     error_reporting(0);
     include('../includes/dbconn.php');
 
-    // Debugging
-    // echo "User Type: " . $_SESSION['usertype'] . "<br>";
-    // echo "Page: " . $page . "<br>";
-
     if(strlen($_SESSION['usertype']) == 0){   
         header('location:index.php');
     } else {
