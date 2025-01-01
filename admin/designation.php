@@ -135,7 +135,7 @@
             
             <div class="main-content-inner">
                 <div class="row">
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                         <div class="card">
                         
 
@@ -253,7 +253,8 @@
             "order": [[1, "desc"]]
         });
 
-        $('.clickable-row').on('click', function() {
+        // Use event delegation to handle click events on dynamically generated rows
+        $('#designationTable tbody').on('click', 'tr.clickable-row', function() {
             window.location = $(this).data('href');
         });
     });

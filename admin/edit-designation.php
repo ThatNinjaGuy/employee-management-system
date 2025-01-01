@@ -88,7 +88,7 @@ if (isset($_POST['update'])) {
             <div class="main-menu">
                 <div class="menu-inner">
                     <?php
-                    $page = 'edit-designation';
+                    $page = 'designation';
                     include '../includes/admin-sidebar.php';
                     ?>
                 </div>
@@ -140,7 +140,7 @@ if (isset($_POST['update'])) {
 
             <div class="main-content-inner">
                 <div class="row">
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                         <div class="card">
                         
                         <?php if($error){?><div class="alert alert-danger alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($error); ?>
