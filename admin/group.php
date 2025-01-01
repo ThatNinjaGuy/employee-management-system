@@ -156,13 +156,17 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Supplier Name</th>
+                                                <th>Employee Count</th>
                                                 <th>Created Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $sql = "SELECT tblgroup.*, tblsupplier.name AS supplier_name FROM tblgroup
-                                                    LEFT JOIN tblsupplier ON tblgroup.supplier_id = tblsupplier.id";
+                                            $sql = "SELECT tblgroup.*, tblsupplier.name AS supplier_name, COUNT(tblemployees.id) AS employee_count 
+                                                    FROM tblgroup
+                                                    LEFT JOIN tblsupplier ON tblgroup.supplier_id = tblsupplier.id
+                                                    LEFT JOIN tblemployees ON tblgroup.id = tblemployees.group_id
+                                                    GROUP BY tblgroup.id";
                                             $query = $dbh->prepare($sql);
                                             $query->execute();
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -171,6 +175,7 @@
                                                     <tr class="clickable-row" data-href="edit-group.php?deptid=<?php echo htmlentities($result->id); ?>">
                                                         <td><?php echo htmlentities($result->name); ?></td>
                                                         <td><?php echo htmlentities($result->supplier_name); ?></td>
+                                                        <td><?php echo htmlentities($result->employee_count); ?></td>
                                                         <td><?php echo htmlentities($result->creation_date); ?></td>
                                                     </tr>
                                                 <?php

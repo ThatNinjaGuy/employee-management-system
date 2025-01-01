@@ -135,7 +135,7 @@
             
             <div class="main-content-inner">
                 <div class="row">
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                         <div class="card">
                         
 
