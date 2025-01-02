@@ -209,7 +209,8 @@
             <div class="main-content-inner">
                 <!-- Key Metrics Section -->
                 <div class="key-metrics mt-5 d-flex flex-wrap">
-                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;"
+                         onclick="navigateTo('supplier')">
                         <div class="metric-content text-center" style="padding: 20px;">
                             <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php echo $supplierCount; ?></h2>
                             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -218,7 +219,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;"
+                         onclick="navigateTo('group')">
                         <div class="metric-content text-center" style="padding: 20px;">
                             <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php echo $groupCount; ?></h2>
                             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -227,7 +229,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;"
+                         onclick="navigateTo('employee')">
                         <div class="metric-content text-center" style="padding: 20px;">
                             <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php echo $activeEmpCount; ?> / <?php echo $empCount; ?></h2>
                             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -236,7 +239,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;">
+                    <div class="metric-card" style="flex: 1 1 200px; min-width: 200px; margin: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px;"
+                         onclick="navigateTo('site')">
                         <div class="metric-content text-center" style="padding: 20px;">
                             <h2 style="font-size: 2.5rem; margin-bottom: 10px;"><?php echo $siteCount; ?></h2>
                             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -246,6 +250,14 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Add the Generate Payroll button here -->
+                <div class="text-center my-4">
+                    <button onclick="navigateTo('payroll')" style="font-size: 1.1rem; padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; cursor: pointer;">
+                        Generate Payroll
+                    </button>
+                </div>
+
                 <div class="chart-container d-flex justify-content-between">
                     <div class="chart-item" style="flex: 1; margin-right: 10px;">
                         <h4 class="section-title">Employee Roles</h4>
@@ -342,6 +354,42 @@
                     renderEmployeeRoleChart();
                     renderSupplierChart();
                 });
+
+                function navigateTo(section) {
+                    <?php if ($_SESSION['usertype'] === 'Admin') { ?>
+                        const adminSections = {
+                            'supplier': 'supplier.php',
+                            'group': 'group.php',
+                            'employee': 'employees.php',
+                            'site': 'site.php',
+                            'payroll': 'payroll.php',
+                            'manage-admin': 'manage-admin.php'
+                        };
+                        window.location.href = adminSections[section];
+                    <?php } elseif ($_SESSION['usertype'] === 'supervisor') { ?>
+                        const supervisorSections = {
+                            'supplier': 'supplier.php',
+                            'group': 'group.php',
+                            'employee': 'employees.php',
+                            'site': 'site.php',
+                            'payroll': 'payroll.php',
+                            'manage-admin': 'manage-admin.php'
+                        };
+                        if (supervisorSections[section]) {
+                            window.location.href = supervisorSections[section];
+                        }
+                    <?php } elseif ($_SESSION['usertype'] === 'default') { ?>
+                        const defaultSections = {
+                            'supplier': 'supplier.php',
+                            'group': 'group.php',
+                            'employee': 'employees.php',
+                            'site': 'site.php'
+                        };
+                        if (defaultSections[section]) {
+                            window.location.href = defaultSections[section];
+                        }
+                    <?php } ?>
+                }
                 </script>
             </div>
 

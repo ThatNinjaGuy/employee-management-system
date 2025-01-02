@@ -13,7 +13,8 @@
             <div class="user-profile pull-right">
                 <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="logout.php">Settings</a>
+                    <a class="dropdown-item" href="settings.php">Settings</a>
+                    <a class="dropdown-item" href="designation.php">Manage Roles</a>
                     <a class="dropdown-item" href="logout.php">Log Out</a>
                 </div>
             </div>
