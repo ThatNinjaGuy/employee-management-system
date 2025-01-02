@@ -180,28 +180,13 @@ if(empty($_SESSION['usertype'])) {
             </div>
         </div>
         <div class="main-content">
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Add Group</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="group.php">Groups</a></li>
-                                <li><span>Add</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+                $pageTitle = "Add Group";
+                $homeLink = "group.php";
+                $breadcrumb = "Add Group";
+                $homeText = "Groups";
+                include '../includes/header.php';
+            ?>
             <div class="main-content-inner">
                 <div class="row">
                     <div class="col-12 mt-2">

@@ -176,30 +176,13 @@ if(empty($_SESSION['usertype'])) {
         </div>
         
         <div class="main-content">
-            
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Add Employee</h4>
-                            <ul class="breadcrumbs pull-left"> 
-                                <li><a href="employees.php">Employee</a></li>
-                                <li><span>Add Employee</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <?php
+                $pageTitle = "Add Employee";
+                $homeLink = "employees.php";
+                $breadcrumb = "Add Employee";
+                $homeText = "Employee";
+                include '../includes/header.php';
+            ?>
             <div class="main-content-inner">
                 <div class="row">
                     <div class="col-lg-6 col-ml-12">

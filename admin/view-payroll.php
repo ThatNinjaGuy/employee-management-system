@@ -85,40 +85,16 @@ if(empty($_SESSION['usertype'])) {
         <!-- sidebar menu area end -->
         <!-- main content area start -->
         <div class="main-content">
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Payroll Section</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="dashboard.php">Home</a></li>
-                                <li><span>Payroll Management</span></li>
-                                
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- page title area end -->
+            <?php
+                $pageTitle = "Payroll Section";
+                $homeLink = "dashboard.php";
+                $breadcrumb = "Payroll Management";
+                $homeText = "Home";
+                include '../includes/header.php';
+            ?>
             <div class="main-content-inner">
-               
-                
-                <!-- row area start -->
                 <div class="row">
-                    <!-- Dark table start -->
-                   
                     <div class="col-12 mt-5">
-    <!-- Displaying Payroll Information -->
-   <!-- Your existing "Create New" button -->
 <a href="" class="btn btn-sm btn-info" data-toggle="modal" data-target="#siteModal">Create New</a>
 
 <!-- Modal for Site and Employee selection -->

@@ -95,41 +95,17 @@ if(empty($_SESSION['usertype'])) {
         <!-- sidebar menu area end -->
         <!-- main content area start -->
         <div class="main-content">
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Payroll Section</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="department.php">Payroll</a></li>
-                                <li><span>Add</span></li>
-                                
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- page title area end -->
+            <?php
+                $pageTitle = "Add Payroll";
+                $homeLink = "payroll.php";
+                $breadcrumb = "Add Payroll";
+                $homeText = "Payroll";
+                include '../includes/header.php';
+            ?>
             <div class="main-content-inner">
-                
-                
-                <!-- row area start -->
                 <div class="row">
-                    <!-- Dark table start -->
-                    <div class="col-12 mt-5">
-                    
+                    <div class="col-12 mt-2">
                         <div class="card">
-                        
-
                         <?php if($error){?><div class="alert alert-danger alert-dismissible fade show"><strong>Info: </strong><?php echo htmlentities($error); ?>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

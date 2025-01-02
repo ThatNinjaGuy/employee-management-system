@@ -149,28 +149,13 @@
         </div>
         
         <div class="main-content">
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Employees</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="dashboard.php">Home</a></li>
-                                <li><span>Employee Management</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+                $pageTitle = "Employee Management";
+                $homeLink = "dashboard.php";
+                $breadcrumb = "Employee Management";
+                $homeText = "Home";
+                include '../includes/header.php';
+            ?>
             
             <!-- Main content area -->
             <div class="main-content-inner">

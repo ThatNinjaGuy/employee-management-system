@@ -68,30 +68,13 @@
         <!-- sidebar menu area end -->
         <!-- main content area start -->
         <div class="main-content">
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Leaves History</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="dashboard.php">Home</a></li>
-                                <li><span>History</span></li>
-                                
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 clearfix">
-                        <div class="user-profile pull-right">
-                            <i class="fa fa-user-circle fa-2x" data-toggle="dropdown"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="logout.php">Settings</a>
-                                <a class="dropdown-item" href="logout.php">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- page title area end -->
+            <?php
+                $pageTitle = "Leave History";
+                $homeLink = "dashboard.php";
+                $breadcrumb = "Leave History";
+                $homeText = "Home";
+                include '../includes/header.php';
+            ?>
             <div class="main-content-inner">
                 
                 
