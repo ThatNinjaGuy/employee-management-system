@@ -646,9 +646,11 @@
 /*-------------------- 2.3 Page Title Area -------------------*/
 
 .page-title-area {
-  padding: 0 30px;
-  background: #fff;
+  padding: 15px 30px;
+  background: #f8f9fa;
   position: relative;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .page-title-area:before {
@@ -659,8 +661,8 @@
   width: 4px;
   height: 36px;
   background: var(--primary-color);
-  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
+  border-radius: 2px;
 }
 
 .page-title {
@@ -705,7 +707,6 @@ ul.breadcrumbs {
 }
 
 .user-profile {
-  margin-right: -30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -714,10 +715,9 @@ ul.breadcrumbs {
   align-items: center;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  background: -webkit-linear-gradient(left, #8914fe 0%, #8063f5 100%);
-  background: linear-gradient(to right, #8914fe 0%, #8063f5 100%);
-  padding: 17px 38px;
+  padding: 0px 10px;
   position: relative;
+  background: none;
 }
 
 .user-profile img.avatar {
