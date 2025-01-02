@@ -2,6 +2,11 @@
     <div class="row align-items-center">
         <div class="col-sm-6">
             <div class="breadcrumbs-area clearfix">
+                <div class="logo" style="float: left; margin-right: 15px; display: flex; align-items: center;">
+                    <a href="dashboard.php">
+                        <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 30px; height: auto;">
+                    </a>
+                </div>
                 <h4 class="page-title pull-left"><?php echo $pageTitle; ?></h4>
                 <ul class="breadcrumbs pull-left">
                     <li><a href="<?php echo $homeLink; ?>"><?php echo $homeText; ?></a></li>
