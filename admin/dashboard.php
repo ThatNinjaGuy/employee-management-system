@@ -162,6 +162,7 @@
 
     .key-metrics .metric-card:hover {
         transform: translateY(-5px);
+        cursor: pointer;
     }
 
     /* Add media query for smaller screens */
@@ -234,7 +235,7 @@
 
                 <!-- Add the Generate Payroll button here -->
                 <div class="text-center my-4">
-                    <button onclick="navigateTo('payroll')" style="font-size: 1.1rem; padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; cursor: pointer;">
+                    <button onclick="navigateTo('payroll')" class="btn btn-primary">
                         Generate Payroll
                     </button>
                 </div>
