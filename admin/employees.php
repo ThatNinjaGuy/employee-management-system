@@ -129,25 +129,6 @@
     </div>
     
     <div class="page-container">
-        <!-- Sidebar -->
-        <div class="sidebar-menu">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <a href="dashboard.php">
-                        <img src="../assets/images/icon/ar2.jpeg" alt="logo" style="width: 60px; height: auto;">
-                    </a>
-                </div>
-            </div>
-            <div class="main-menu">
-                <div class="menu-inner">
-                    <?php
-                        $page='employee';
-                        include '../includes/admin-sidebar.php';
-                    ?>
-                </div>
-            </div>
-        </div>
-        
         <div class="main-content">
             <?php
                 $pageTitle = "Employee Management";

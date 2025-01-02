@@ -76,35 +76,6 @@
     <!-- preloader area end -->
     <!-- page container area start -->
     <div class="page-container">
-        <!-- sidebar menu area start -->
-        <div class="sidebar-menu">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <a href="leave.php"><img src="../assets/images/icon/logo.png" alt="logo"></a>
-                </div>
-            </div>
-            <div class="main-menu">
-                <div class="menu-inner">
-                    <nav>
-                        <ul class="metismenu" id="menu">
-
-                            <li class="active">
-                                <a href="leave.php" aria-expanded="true"><i class="ti-user"></i><span>Apply Leave
-                                    </span></a>
-                            </li>
-
-                            <li class="#">
-                                <a href="leave-history.php" aria-expanded="true"><i class="ti-agenda"></i><span>View My Leave History
-                                    </span></a>
-                            </li>
-
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- sidebar menu area end -->
-        <!-- main content area start -->
         <div class="main-content">
             <div class="page-title-area">
                 <div class="row align-items-center">
